@@ -52,7 +52,7 @@ $(document).ready(function () {
 	var output = document.getElementsByClassName('value');
 
 	for (let i = 0; i < slider.length; i++) {
-		output[i].innerHTML = 'Tidak';
+		output[i].innerHTML = slider[i].value;
 	}
 
 	for (let i = 0; i < slider.length; i++) {
