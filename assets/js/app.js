@@ -52,7 +52,19 @@ $(document).ready(function () {
 	var output = document.getElementsByClassName('value');
 
 	for (let i = 0; i < slider.length; i++) {
-		output[i].innerHTML = slider[i].value;
+		if (slider[i].value == 0) {
+			output[i].innerHTML = 'Tidak';
+		} else if (slider[i].value == 1) {
+			output[i].innerHTML = 'Tidak Tau';
+		} else if (slider[i].value == 2) {
+			output[i].innerHTML = 'Sedikit Yakin';
+		} else if (slider[i].value == 3) {
+			output[i].innerHTML = 'Cukup Yakin';
+		} else if (slider[i].value == 4) {
+			output[i].innerHTML = 'Yakin';
+		} else {
+			output[i].innerHTML = 'Sangat Yakin';
+		}
 	}
 
 	for (let i = 0; i < slider.length; i++) {
@@ -92,7 +104,6 @@ $(document).ready(function () {
 			}
 
 			let color = `linear-gradient(90deg, rgb(239, 71, 64)${x}%, rgb(214, 214, 214)${x}%)`;
-			// rgb(239,71,64)
 
 			slider[i].style.background = color;
 
