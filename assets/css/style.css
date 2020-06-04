@@ -221,6 +221,10 @@ span.value {
 	opacity: 1;
 }
 
+.slider.disabledInput:hover {
+	opacity: 0.7;
+}
+
 /* Google Chrome */
 .slider::-webkit-slider-thumb {
 	-webkit-appearance: none;
