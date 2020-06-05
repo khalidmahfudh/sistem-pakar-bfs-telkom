@@ -44,29 +44,49 @@ class Konsultasiinternet extends CI_Controller
     public function diagnosa($param)
     {
         $data['title'] = "Gangguan Internet Fiber";
-        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();  
-        $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();  
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
 
-        $gejalaByGangguan = $data['gejalaByGangguan'];
-        $firstQuestion = $data['gejalaByGangguan'][0][3];
+        /*
+    |-------------------------------------------------------------------------------------------------
+    | $servicesInterruptionAndSymptoms - $theRoot - $theQuestionsForPageOne - $theQuestionsForPageTwo
+    |-------------------------------------------------------------------------------------------------
+    |
+    | $servicesInterruptionAndSymptoms = Variabel ini menampung seluruh gangguan yang ada,
+    | yang tiap gangguannya terdiri dari nama_gangguan[0], kode_gangguan[1], solusi_gangguan[2], 
+    | nama_gejalanya[3], kode_gejalanya[4] dst.
+    |
+    | $theRoot = Variabel ini berisi nama gejala awal (string), yang menjadi root pertanyaan di halaman pertama .
+    |
+    | $theQuestionsForPageOne = Variabel ini berisi gangguan $servicesInterruptionAndSymptoms,
+    | yang di pecah, dan diambil bagian gangguan yang memiliki gangguan $theRoot
+    |
+    | $theQuestionsForPageTwo = Variabel ini merupakan sisanya dari pemecahan $servicesInterruptionAndSymptoms,
+    | yang berisi sisanya yaitu gangguan tanpa memiliki $theRoot untuk ditampilakn pada halaman sesudahnya
+    | jika user menjawab tidak pada $theRoot
+    |
+    */
 
+        $servicesInterruptionAndSymptoms = $data['gejalaByGangguan'];
+        $theRoot = $data['gejalaByGangguan'][0][3];
 
         $i = 0;
         $j = 0;
-        foreach ($gejalaByGangguan as $gbg) {   
-            if ($gbg[3] == $firstQuestion) {
-                $selectedQue[$i] = $gbg;
+        foreach ($servicesInterruptionAndSymptoms as $interruption) {
+            if ($interruption[3] == $theRoot) {
+                $theQuestionsForPageOne[$i] = $interruption;
                 $i++;
             } else {
-                $selectedQue2[$j] = $gbg;
+                $theQuestionsForPageTwo[$j] = $interruption;
                 $j++;
             }
         }
 
+        // -------------------------------------------------------------------------- //
 
-        if ( $param == 'first') {
-            $data['kode'] = 1;
-            $questions = $this->Internet_model->getAllGejala();  
+        if ($param == 'first') {
+            $data['gejalaCode_'] = 1;
+            $questions = $this->Internet_model->getAllGejala();
             $question[0] = $questions[0];
             $data['question'] = $question;
 
@@ -75,99 +95,95 @@ class Konsultasiinternet extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('konsultasiinternet/diagnosa', $data);
             $this->load->view('templates/footer');
-
-        } else if ( $param == 'second' ){
-            $data['questions'] = $selectedQue2;      
+        } else if ($param == 'second') {
+            $data['questions'] = $theQuestionsForPageTwo;
 
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('konsultasiinternet/diagnosa2', $data);
             $this->load->view('templates/footer');
-
-        } else if ( $param == 'transition' ){
+        } else if ($param == 'transition') {
 
             $str = ($this->input->post('radio1'));
-            $radio = explode("-",$str);
+            $radio = explode("-", $str);
 
+            var_dump($radio);
+            die;
 
-            if ( $radio[2] == 1) {
+            if ($radio[2] == 1) {
 
-                $kode = $radio[0];
-                $ans = $radio[1];
-                $div = $radio[2];
-
+                $gejalaCode = $radio[0];
+                $isYes = $radio[1];
+                $isFromPageOne = $radio[2];
 
                 $data = [
-                    'kode' => $kode,
-                    'ans' => $ans,
-                    'div' => $div
+                    'gejalaCode_' => $gejalaCode,
+                    'isYes_' => $isYes,
+                    'isFromPageOne_' => $isFromPageOne
                 ];
                 $this->session->set_userdata($data);
 
-                if ($ans == '1') {
+                if ($isYes == '1') {
                     redirect('konsultasiinternet/diagnosa/persentase');
                 } else {
                     redirect('konsultasiinternet/diagnosa/second');
                 }
-
             } else {
 
-                $kode = $radio[0];
-                $ans = $radio[1];
-                $div = $radio[2];
+                $gejalaCode = $radio[0];
+                $isYes = $radio[1];
+                $isFromPageOne = $radio[2];
 
 
                 $data = [
-                    'kode' => $kode,
-                    'ans' => $ans,
-                    'div' => $div
+                    'gejalaCode_' => $gejalaCode,
+                    'isYes_' => $isYes,
+                    'isFromPageOne_' => $isFromPageOne
                 ];
 
                 $this->session->set_userdata($data);
 
-                if ($kode == '999') {
+                if ($gejalaCode == '999') {
                     redirect('konsultasiinternet/diagnosa/unknownresult');
                 } else {
                     redirect('konsultasiinternet/diagnosa/persentase');
                 }
             }
+        } else if ($param == 'persentase') {
 
-        } else if ( $param == 'persentase') {
 
+            $gejalaCode = $this->session->userdata('gejalaCode_');
+            $isYes = $this->session->userdata('isYes_');
+            $isFromPageOne = $this->session->userdata('isFromPageOne_');
 
-            $kode = $this->session->userdata('kode');
-            $ans = $this->session->userdata('ans');
-            $div = $this->session->userdata('div');
+            $data['gejalaCode_'] = $gejalaCode;
 
-            $data['kode'] = $kode;
-
-            if ( $div == '1' ){
-                $data['questions'] = $selectedQue;    
+            if ($isFromPageOne == '1') {
+                $data['questions'] = $theQuestionsForPageOne;
             } else {
 
                 $j = 0;
 
-                foreach ($selectedQue as $sq) {
-                    for ($i=0; $i < count(array_slice($sq,3)); $i++) { 
-                        if ( array_slice($sq,3)[$i] == $kode ) {
+                foreach ($theQuestionsForPageOne as $sq) {
+                    for ($i = 0; $i < count(array_slice($sq, 3)); $i++) {
+                        if (array_slice($sq, 3)[$i] == $gejalaCode) {
                             $selected[$j] = $sq;
                             $j++;
                         }
-                    }  
+                    }
                 }
-                
-                foreach ($selectedQue2 as $sq2) {
-                    for ($i=0; $i < count(array_slice($sq2,3)); $i++) { 
-                        if ( array_slice($sq2,3)[$i] == $kode ) {
+
+                foreach ($theQuestionsForPageTwo as $sq2) {
+                    for ($i = 0; $i < count(array_slice($sq2, 3)); $i++) {
+                        if (array_slice($sq2, 3)[$i] == $gejalaCode) {
                             $selected[$j] = $sq2;
                             $j++;
                         }
-                    }  
+                    }
                 }
 
-                $data['questions'] = $selected; 
-
+                $data['questions'] = $selected;
             }
 
             $data['allKodeGangguan'] = $this->session->userdata('allKodeGangguan');
@@ -178,60 +194,61 @@ class Konsultasiinternet extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('konsultasiinternet/persentasediagnosa', $data);
             $this->load->view('templates/footer');
-
-
-
-        } else if ( $param == 'result' ){
+        } else if ($param == 'result') {
 
             $data['results'] = $this->input->post();
-            var_dump($this->input->post());die;
+            // var_dump($this->input->post());
+            // die;
 
-
-            if ( !$data['results'] ) {
+            if (!$data['results']) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
-            } 
+            }
 
-            $kode = $this->session->userdata('kode');
-            $ans = $this->session->userdata('ans');
-            $div = $this->session->userdata('div');
+            $gejalaCode = $this->session->userdata('gejalaCode_');
+            $isYes = $this->session->userdata('isYes_');
+            $isFromPageOne = $this->session->userdata('isFromPageOne_');
 
-            if ( $div == '1' ){
-                $data['questions'] = $selectedQue;    
+            var_dump($theQuestionsForPageTwo);
+            // echo "<br>";
+            // var_dump($isYes);
+            echo "<br>";
+            var_dump($isFromPageOne);
+            die;
+
+            if ($isFromPageOne == '1') {
+                $data['questions'] = $theQuestionsForPageOne;
             } else {
 
                 $j = 0;
 
-                foreach ($selectedQue as $sq) {
-                    for ($i=0; $i < count(array_slice($sq,3)); $i++) { 
-                        if ( array_slice($sq,3)[$i] == $kode ) {
+                foreach ($theQuestionsForPageOne as $sq) {
+                    for ($i = 0; $i < count(array_slice($sq, 3)); $i++) {
+                        if (array_slice($sq, 3)[$i] == $gejalaCode) {
                             $selected[$j] = $sq;
                             $j++;
                         }
-                    }  
+                    }
                 }
-                
-                foreach ($selectedQue2 as $sq2) {
-                    for ($i=0; $i < count(array_slice($sq2,3)); $i++) { 
-                        if ( array_slice($sq2,3)[$i] == $kode ) {
+
+                foreach ($theQuestionsForPageTwo as $sq2) {
+                    for ($i = 0; $i < count(array_slice($sq2, 3)); $i++) {
+                        if (array_slice($sq2, 3)[$i] == $gejalaCode) {
                             $selected[$j] = $sq2;
                             $j++;
                         }
-                    }  
+                    }
                 }
 
-                $data['questions'] = $selected; 
-
-            }   
-                // var_dump($data['questions']);die;
+                $data['questions'] = $selected;
+            }
+            // var_dump($data['questions']);die;
 
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('konsultasiinternet/hasildiagnosa', $data);
             $this->load->view('templates/footer');
-
-
-        } else if ( $param == 'unknownresult' ){
+        } else if ($param == 'unknownresult') {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
@@ -240,11 +257,6 @@ class Konsultasiinternet extends CI_Controller
         } else {
 
             redirect('konsultasiinternet/index');
-
         }
-
-
-    } 
-
-
+    }
 }
