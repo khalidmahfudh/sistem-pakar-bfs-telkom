@@ -108,9 +108,6 @@ class Konsultasiinternet extends CI_Controller
             $str = ($this->input->post('radio1'));
             $radio = explode("-", $str);
 
-            var_dump($radio);
-            die;
-
             if ($radio[2] == 1) {
 
                 $gejalaCode = $radio[0];
@@ -197,8 +194,6 @@ class Konsultasiinternet extends CI_Controller
         } else if ($param == 'result') {
 
             $data['results'] = $this->input->post();
-            // var_dump($this->input->post());
-            // die;
 
             if (!$data['results']) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
