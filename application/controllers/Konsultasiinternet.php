@@ -85,10 +85,10 @@ class Konsultasiinternet extends CI_Controller
         // -------------------------------------------------------------------------- //
 
         if ($param == 'first') {
-            $data['gejalaCode_'] = 1;
-            $questions = $this->Internet_model->getAllGejala();
-            $question[0] = $questions[0];
-            $data['question'] = $question;
+            $data['gejalaCode'] = 1;
+            $allSymptoms = $this->Internet_model->getAllGejala();
+            $symptom = $allSymptoms[0];
+            $data['question'] = $symptom;
 
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
@@ -108,14 +108,15 @@ class Konsultasiinternet extends CI_Controller
             $str = ($this->input->post('radio1'));
             $radio = explode("-", $str);
 
+            /* Apakah berasal dari halaman 1? */
             if ($radio[2] == 1) {
 
-                $gejalaCode = $radio[0];
+                $symptomCode = $radio[0];
                 $isYes = $radio[1];
                 $isFromPageOne = $radio[2];
 
                 $data = [
-                    'gejalaCode_' => $gejalaCode,
+                    'symptomCode_' => $symptomCode,
                     'isYes_' => $isYes,
                     'isFromPageOne_' => $isFromPageOne
                 ];
@@ -126,59 +127,73 @@ class Konsultasiinternet extends CI_Controller
                 } else {
                     redirect('konsultasiinternet/diagnosa/second');
                 }
-            } else {
 
-                $gejalaCode = $radio[0];
+                /* Apakah berasal dari halaman 2? */
+            } elseif ($radio[2] == 2) {
+
+
+                $symptomCode = $radio[0];
                 $isYes = $radio[1];
                 $isFromPageOne = $radio[2];
 
 
                 $data = [
-                    'gejalaCode_' => $gejalaCode,
+                    'symptomCode_' => $symptomCode,
                     'isYes_' => $isYes,
                     'isFromPageOne_' => $isFromPageOne
                 ];
 
                 $this->session->set_userdata($data);
 
-                if ($gejalaCode == '999') {
+                if ($symptomCode == '999') {
                     redirect('konsultasiinternet/diagnosa/unknownresult');
                 } else {
                     redirect('konsultasiinternet/diagnosa/persentase');
                 }
+            } else {
+                // jika berasal dari halaman 3
             }
         } else if ($param == 'persentase') {
 
-
-            $gejalaCode = $this->session->userdata('gejalaCode_');
+            $symptomCode = $this->session->userdata('symptomCode_');
             $isYes = $this->session->userdata('isYes_');
             $isFromPageOne = $this->session->userdata('isFromPageOne_');
 
-            $data['gejalaCode_'] = $gejalaCode;
+            $data['symptomCode'] = $symptomCode;
 
             if ($isFromPageOne == '1') {
                 $data['questions'] = $theQuestionsForPageOne;
             } else {
 
+                // var_dump(count(array_slice($theQuestionsForPageOne[0], 3)));
+                // die;
                 $j = 0;
 
-                foreach ($theQuestionsForPageOne as $sq) {
-                    for ($i = 0; $i < count(array_slice($sq, 3)); $i++) {
-                        if (array_slice($sq, 3)[$i] == $gejalaCode) {
-                            $selected[$j] = $sq;
+                foreach ($theQuestionsForPageOne as $questionPageOne) {
+                    for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
+                        if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
+                            $selected[$j] = $questionPageOne;
                             $j++;
                         }
                     }
                 }
 
-                foreach ($theQuestionsForPageTwo as $sq2) {
-                    for ($i = 0; $i < count(array_slice($sq2, 3)); $i++) {
-                        if (array_slice($sq2, 3)[$i] == $gejalaCode) {
-                            $selected[$j] = $sq2;
+                var_dump($questionPageOne);
+                die;
+
+
+                foreach ($theQuestionsForPageTwo as $questionPageTwo) {
+                    for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
+                        if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
+                            $selected[$j] = $questionPageTwo;
                             $j++;
                         }
                     }
                 }
+
+                var_dump($selected);
+                die;
+
 
                 $data['questions'] = $selected;
             }
@@ -199,7 +214,7 @@ class Konsultasiinternet extends CI_Controller
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
 
-            $gejalaCode = $this->session->userdata('gejalaCode_');
+            $symptomCode = $this->session->userdata('symptomCode_');
             $isYes = $this->session->userdata('isYes_');
             $isFromPageOne = $this->session->userdata('isFromPageOne_');
 
@@ -216,19 +231,19 @@ class Konsultasiinternet extends CI_Controller
 
                 $j = 0;
 
-                foreach ($theQuestionsForPageOne as $sq) {
-                    for ($i = 0; $i < count(array_slice($sq, 3)); $i++) {
-                        if (array_slice($sq, 3)[$i] == $gejalaCode) {
-                            $selected[$j] = $sq;
+                foreach ($theQuestionsForPageOne as $questionPageOne) {
+                    for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
+                        if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
+                            $selected[$j] = $questionPageOne;
                             $j++;
                         }
                     }
                 }
 
-                foreach ($theQuestionsForPageTwo as $sq2) {
-                    for ($i = 0; $i < count(array_slice($sq2, 3)); $i++) {
-                        if (array_slice($sq2, 3)[$i] == $gejalaCode) {
-                            $selected[$j] = $sq2;
+                foreach ($theQuestionsForPageTwo as $questionPageTwo) {
+                    for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
+                        if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
+                            $selected[$j] = $questionPageTwo;
                             $j++;
                         }
                     }

@@ -4,7 +4,7 @@ for ($i = 0; $i < count($questions); $i++) {
     $theQuestions[$i] = array_slice($questions[$i], 3);
 }
 
-$checked = $kode;
+$checked = $symptomCode;
 
 ?>
 

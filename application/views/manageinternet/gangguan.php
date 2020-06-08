@@ -3,8 +3,8 @@
 
     <!-- Page Heading -->
     <nav class="title">
-        
-    <h1 class="h3 text-dark text-center">Daftar Gangguan Pada Gangguan Layanan Internet Fiber Indihome</h1>
+
+        <h1 class="h3 text-dark text-center">Daftar Gangguan Pada Gangguan Layanan Internet Fiber Indihome</h1>
     </nav>
 
     <?php if ($this->session->flashdata('flash')) : ?>
@@ -66,13 +66,13 @@
                             <td><?= $g['solusi_gangguan']; ?></td>
                             <td>
                                 <div class="d-flex">
-                                    
-                                <a class="badge badge-warning action text-dark mr-2" href="<?= base_url(); ?>manageinternet/ubahgangguan/<?= $g['id']; ?>" title="ubah data">
-                                    <i class="fas fa-fw fa-edit"></i>Ubah
-                                </a>
-                                <a class="badge badge-danger action text-dark" href="<?= base_url(); ?>manageinternet/hapusgangguan/<?= $g['id']; ?>/<?= $g['kode_gangguan']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gangguan']; ?>?');">
-                                    <i class="fas fa-fw fa-trash"></i>Hapus
-                                </a>
+
+                                    <a class="badge badge-warning action text-dark mr-2" href="<?= base_url(); ?>manageinternet/ubahgangguan/<?= $g['id']; ?>" title="ubah data">
+                                        <i class="fas fa-fw fa-edit"></i>Ubah
+                                    </a>
+                                    <a class="badge badge-danger action text-dark" href="<?= base_url(); ?>manageinternet/hapusgangguan/<?= $g['id']; ?>/<?= $g['kode_gangguan']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gangguan']; ?>?');">
+                                        <i class="fas fa-fw fa-trash"></i>Hapus
+                                    </a>
 
                                 </div>
                             </td>

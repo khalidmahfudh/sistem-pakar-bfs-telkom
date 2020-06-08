@@ -1,4 +1,3 @@
-
 <!-- Begin Page Content -->
 
 <!-- Page Heading -->
@@ -12,7 +11,7 @@
         <div class="col-md-8">
             <ul class="list-group">
                 <li class="list-group-item text-danger border-left-danger">
-                    KETERANGAN : Jika ada pernyataan tidak dijawab, maka sama saja anda memilih "TIDAK".
+                    KETERANGAN : Jawablah pernyataan dibawah ini dengan tepat!
                 </li>
             </ul>
         </div>
@@ -21,29 +20,27 @@
         <div class="col-md" id="card-container">
             <div class="card border-info mb-3">
                 <div class="card-body text-info Qbc">
-                    <h4 class="card-title">Pertanyaan :</h4><hr>
-                    <?php $i=0; ?>
+                    <h4 class="card-title">Pertanyaan :</h4>
+                    <hr>
+                    <?php $i = 0; ?>
                     <form method="post" action="<?= base_url('konsultasiinternet/diagnosa/transition'); ?>" class="form">
-                        <?php foreach ($question as $que) : ?>
-                            
                         <div class="form-wrap">
                             <div class="row">
-                                <h4 class="card-text my-2 ml-2"><?= ++$i; ?>. Apakah <?= $que['nama_gejala']; ?> ?</h4>
+                                <h4 class="card-text my-2 ml-2"><?= ++$i; ?>. Apakah <?= $question['nama_gejala']; ?> ?</h4>
                             </div>
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label" id="label">
-                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $que['id'] ?>1"  style="height: 30px; width: 30px;" value="<?= $que['kode_gejala'] ?>-1-1" checked>
+                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>1" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>-1-1" checked>
                                     <h5>YA</h5>
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <label class="form-check-label">                 
-                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $que['id'] ?>2"  style="height: 30px; width: 30px;" value="<?= $que['kode_gejala'] ?>-2-1">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>2" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>-2-1">
                                     <h5>TIDAK</h5>
                                 </label>
                             </div>
                         </div>
-                        <?php endforeach; ?>
                         <hr class="mt-4">
                         <button type="submit" class="btn-diagnosis my-3" style="display: block;">SUBMIT</button>
                     </form>
