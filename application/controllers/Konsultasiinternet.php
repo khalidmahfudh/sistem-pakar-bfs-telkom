@@ -82,6 +82,7 @@ class Konsultasiinternet extends CI_Controller
             }
         }
 
+
         // -------------------------------------------------------------------------- //
 
         if ($param == 'first') {
@@ -96,7 +97,16 @@ class Konsultasiinternet extends CI_Controller
             $this->load->view('konsultasiinternet/diagnosa', $data);
             $this->load->view('templates/footer');
         } else if ($param == 'second') {
-            $data['questions'] = $theQuestionsForPageTwo;
+
+            for ($i = 0; $i < count($theQuestionsForPageTwo); $i++) {
+                $theQuestions[$i] = array_slice($theQuestionsForPageTwo[$i], 3);
+            }
+
+            for ($i = 0; $i < count($theQuestionsForPageTwo); $i++) {
+                $questions[$i] = array_chunk($theQuestions[$i], 2);
+            }
+
+            $data['questions'] = $questions;
 
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
