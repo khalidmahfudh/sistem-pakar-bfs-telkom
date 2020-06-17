@@ -138,7 +138,32 @@ class Konsultasiinternet extends CI_Controller
             $this->load->view('templates/footer');
         } else if ($param == 'last') {
             $allSymptomsPerPart = $this->session->userdata('allSymptomsPerPart_');
-            $question_yes = $this->session->userdata('questions_yes_');
+            $questions_yes = $this->session->userdata('questions_yes_');
+            $chunk_questions_yes = array_chunk($questions_yes, 2);
+            $theLastQuestions = [];
+
+            for ($i = 0; $i < count($allSymptomsPerPart); $i++) {
+                for ($j = 0; $j < count($chunk_questions_yes); $j++) {
+                    if ($allSymptomsPerPart[$i][0][0] == $chunk_questions_yes[$j][0]) {
+                        array_push($theLastQuestions, $allSymptomsPerPart[$i]);
+                    }
+                }
+            }
+
+            for ($i = 0; $i < count($theLastQuestions); $i++) {
+                var_dump($theLastQuestions[$i]);
+                echo '<br>';
+            }
+            // var_dump($theLastQuestions);
+            die;
+
+            $data['question'] = '';
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('konsultasiinternet/diagnosa3', $data);
+            $this->load->view('templates/footer');
         } else if ($param == 'transition') {
             $getData = $this->input->post();
 

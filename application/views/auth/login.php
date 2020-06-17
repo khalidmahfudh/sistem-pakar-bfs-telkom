@@ -53,6 +53,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="moto">
+                    <img src="<?= base_url('assets/img/moto.png'); ?>" class="img-fluid mt-n5" alt="moto">
+                </div>
             </div>
 
         </div>
