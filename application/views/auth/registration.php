@@ -34,10 +34,10 @@
                         </form>
                         <hr>
                         <div class="text-center">
-                            <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
+                            <a class="small bottom-links" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
                         </div>
                         <div class="text-center">
-                            <a class="small" href="<?= base_url('auth'); ?>">Already have an account? Login!</a>
+                            <a class="small bottom-links" href="<?= base_url('auth'); ?>">Already have an account? Login!</a>
                         </div>
                     </div>
                 </div>

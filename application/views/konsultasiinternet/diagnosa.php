@@ -22,27 +22,42 @@
                 <div class="card-body text-info Qbc">
                     <h4 class="card-title">Pertanyaan :</h4>
                     <hr>
-                    <?php $i = 0; ?>
-                    <form method="post" action="<?= base_url('konsultasiinternet/diagnosa/transition'); ?>" class="form">
+                    <form method="post" action="<?= base_url('konsultasiinternet/transition'); ?>" class="form">
                         <div class="form-wrap">
                             <div class="row">
-                                <h4 class="card-text my-2 ml-2"><?= ++$i; ?>. Apakah <?= $question['nama_gejala']; ?> ?</h4>
+                                <h4 class="card-text my-2 ml-2"><?= $number; ?>. Apakah <?= $question['nama_gejala']; ?> ?</h4>
                             </div>
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label" id="label">
-                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>1" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>-1-1" checked>
+                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>1" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>:1:<?= $root; ?>:<?= $number; ?>" checked>
                                     <h5>YA</h5>
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>2" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>-2-1">
+                                    <input class="form-check-input" type="radio" name="radio1" id="radio<?= $question['id'] ?>2" style="height: 30px; width: 30px;" value="<?= $question['kode_gejala'] ?>:2:<?= $root; ?>:<?= $number; ?>">
                                     <h5>TIDAK</h5>
                                 </label>
                             </div>
                         </div>
+                        <div class="code">
+                            <code>
+                                OPEN [ <?php
+                                        foreach ($_SESSION['open_'] as $open) {
+                                        ?>G<?= $open; ?>, <?php
+                                                        }
+                                                            ?> ]
+                            <br><br>
+                            CLOSED [ <?php
+                                        foreach ($_SESSION['closed_'] as $open) {
+                                        ?>G<?= $open; ?>, <?php
+                                                        }
+                                                            ?> ]
+                            </code>
+                        </div>
                         <hr class="mt-4">
-                        <button type="submit" class="btn-diagnosis my-3" style="display: block;">SUBMIT</button>
+                        <button type="submit" class="btn-diagnosis my-3" style="">SUBMIT</button>
+                        <a href="<?= base_url('konsultasiinternet/reset'); ?>" class="ml-2">Reset Soal</a>
                     </form>
                 </div>
             </div>

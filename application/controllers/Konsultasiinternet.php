@@ -3,6 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Konsultasiinternet extends CI_Controller
 {
+    var $allSymptomsPerPart = [];
+    var $roots = [];
+    var $root = 0;
+
+    // Deklarasi array open dan closed
+    var $open = [];
+    var $closed = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -41,13 +49,15 @@ class Konsultasiinternet extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function diagnosa($param)
+    public function questions($number = 1)
     {
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
 
-
+        if ($number == 0) {
+            $number = 1;
+        }
 
         /*
     |-------------------------------------------------------------------------------------------------
@@ -76,253 +86,309 @@ class Konsultasiinternet extends CI_Controller
         $j = 0;
         foreach ($servicesInterruptionAndSymptoms as $interruption) {
             if ($interruption[3] == $theRoot) {
-                $theQuestionsForPageOne[$i] = $interruption;
+                $theQuestionsWithRoot[$i] = $interruption;
                 $i++;
             } else {
-                $theQuestionsForPageTwo[$j] = $interruption;
+                $theQuestionsWithoutRoot[$j] = $interruption;
                 $j++;
             }
         }
 
 
-        // -------------------------------------------------------------------------- //
 
-        if ($param == 'first') {
-            $data['gejalaCode'] = 1;
-            $allSymptoms = $this->Internet_model->getAllGejala();
-            $symptom = $allSymptoms[0];
-            $data['question'] = $symptom;
+        // $allSymptomsPerPart = [];
+        // $roots = [];
+        // $root = 0;
+        // $theQuestions berisi seluruh gangguan, tanpa gangguannya, tinggal gejala2nya aja
+        // $questions berisi seluruh gangguan, tanpa gangguannya, tinggal gejala2nya aja juga, tapi gejalanya sudah di pecah menjadia array.
 
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/diagnosa', $data);
-            $this->load->view('templates/footer');
-        } else if ($param == 'middle') {
 
-            $data['questions'] = [];
-            $allSymptomsPerPart = [];
+        for ($i = 0; $i < count($servicesInterruptionAndSymptoms); $i++) {
+            $theQuestions[$i] = array_slice($servicesInterruptionAndSymptoms[$i], 3);
+        }
 
-            for ($i = 0; $i < count($servicesInterruptionAndSymptoms); $i++) {
-                $theQuestions[$i] = array_slice($servicesInterruptionAndSymptoms[$i], 3);
-            }
+        for ($i = 0; $i < count($servicesInterruptionAndSymptoms); $i++) {
+            $questions[$i] = array_chunk($theQuestions[$i], 2);
 
-            for ($i = 0; $i < count($servicesInterruptionAndSymptoms); $i++) {
-                $questions[$i] = array_chunk($theQuestions[$i], 2);
-
-                if ($questions[$i][0][0] === $theRoot) {
-                    if (count($questions[$i]) > 1) {
-                        array_push($allSymptomsPerPart, array_slice($questions[$i], 1));
-                    } else {
-                        continue;
-                    }
+            if ($questions[$i][0][0] === $theRoot) {
+                if (count($questions[$i]) > 1) {
+                    array_push($this->allSymptomsPerPart, array_slice($questions[$i], 1));
                 } else {
-                    array_push($allSymptomsPerPart, $questions[$i]);
+                    continue;
                 }
-            }
-
-            for ($i = 0; $i < count($allSymptomsPerPart); $i++) {
-                array_push($data['questions'], $allSymptomsPerPart[$i][0]);
-            }
-
-            // $this->session->unset_userdata('allSymptomsPerPart_');
-            $this->session->set_userdata(['allSymptomsPerPart_' => $allSymptomsPerPart]);
-
-            // var_dump($data['questions']);
-            // die;
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/diagnosa2', $data);
-            $this->load->view('templates/footer');
-        } else if ($param == 'last') {
-            $allSymptomsPerPart = $this->session->userdata('allSymptomsPerPart_');
-            $questions_yes = $this->session->userdata('questions_yes_');
-            $chunk_questions_yes = array_chunk($questions_yes, 2);
-            $theLastQuestions = [];
-
-            for ($i = 0; $i < count($allSymptomsPerPart); $i++) {
-                for ($j = 0; $j < count($chunk_questions_yes); $j++) {
-                    if ($allSymptomsPerPart[$i][0][0] == $chunk_questions_yes[$j][0]) {
-                        array_push($theLastQuestions, $allSymptomsPerPart[$i]);
-                    }
-                }
-            }
-
-            for ($i = 0; $i < count($theLastQuestions); $i++) {
-                var_dump($theLastQuestions[$i]);
-                echo '<br>';
-            }
-            // var_dump($theLastQuestions);
-            die;
-
-            $data['question'] = '';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/diagnosa3', $data);
-            $this->load->view('templates/footer');
-        } else if ($param == 'transition') {
-            $getData = $this->input->post();
-
-            if (count($getData) == 1) {
-
-                $answer = $getData['radio1'];
-                $theAnswer = explode("-", $answer);
-
-                $symptomCode = $theAnswer[0];
-                $isYes = $theAnswer[1];
-                $isFromPageOne = $theAnswer[2];
-
-                $data = [
-                    'symptomCode_' => $symptomCode,
-                    'isYes_' => $isYes,
-                    'isFromPageOne_' => $isFromPageOne
-                ];
-                $this->session->set_userdata($data);
-
-                if ($isYes == '1') {
-                    redirect('konsultasiinternet/diagnosa/persentase');
-                } else {
-                    redirect('konsultasiinternet/diagnosa/middle');
-                }
+                continue;
             } else {
-                $questions_yes = [];
-                for ($i = 1; $i <= count($getData); $i++) {
-                    $explode[$i] = explode("-", $getData['radio' . $i]);
-                    $symptomName2[$i] = $explode[$i][0];
-                    $symptomCode2[$i] = $explode[$i][1];
-                    $isYes2[$i] = $explode[$i][2];
-
-                    if ($isYes2[$i] == 1) {
-                        array_push($questions_yes, $symptomName2[$i], $symptomCode2[$i]);
-                    }
-                }
-
-                $this->session->set_userdata(['questions_yes_' => $questions_yes]);
-
-                if (count($questions_yes) == 0) {
-                    redirect('konsultasiinternet/diagnosa/unknownresult');
-                } else {
-                    redirect('konsultasiinternet/diagnosa/last');
-                }
+                array_push($this->allSymptomsPerPart, $questions[$i]);
             }
-        } else if ($param == 'persentase') {
+        }
+        for ($i = 0; $i < count($this->allSymptomsPerPart); $i++) {
+            $this->roots[$i] = $this->allSymptomsPerPart[$i];
+        }
 
-            $symptomCode = $this->session->userdata('symptomCode_');
-            $isYes = $this->session->userdata('isYes_');
-            $isFromPageOne = $this->session->userdata('isFromPageOne_');
+        if ($this->session->userdata('number_')) {
+            $data['number'] = $this->session->userdata('number_');
+            $number = $this->session->userdata('number_');
+        } else {
+            $data['number'] = $number;
+        }
 
-            $data['symptomCode'] = $symptomCode;
+        if ($this->session->userdata('root_')) {
+            $data['root'] = $this->session->userdata('root_');
+        } else {
+            $data['root'] = $this->root;
+        }
 
-            if ($isFromPageOne == '1') {
-                $data['questions'] = $theQuestionsForPageOne;
-            } else {
-
-                // var_dump(count(array_slice($theQuestionsForPageOne[0], 3)));
-                // die;
-                $j = 0;
-
-                foreach ($theQuestionsForPageOne as $questionPageOne) {
-                    for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
-                        if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
-                            $selected[$j] = $questionPageOne;
-                            $j++;
-                        }
-                    }
-                }
-
-                var_dump($questionPageOne);
-                die;
+        if (!$this->session->userdata('open_')) {
+            // masukkan root awal ke dalam open[] sebagai pertanyan pertama
+            array_push($this->open, $theQuestionsWithRoot[0][4]);
+        } else {
+            $this->open = $this->session->userdata('open_');
+            $this->closed = $this->session->userdata('closed_');
+        }
 
 
-                foreach ($theQuestionsForPageTwo as $questionPageTwo) {
-                    for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
-                        if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
-                            $selected[$j] = $questionPageTwo;
-                            $j++;
-                        }
-                    }
-                }
+        $data1 = [
+            'open_' => $this->open,
+            'closed_' => $this->closed,
+            'roots_' => $this->roots
+        ];
+        $this->session->set_userdata($data1);
 
-                var_dump($selected);
-                die;
+        // id,nama gejala dan kode gejala untuk dikirim ke view
 
+        $symptom = $this->Internet_model->getGejalaByKode($this->open[0]);
 
-                $data['questions'] = $selected;
-            }
-
-            $data['allKodeGangguan'] = $this->session->userdata('allKodeGangguan');
+        $data['question'] = $symptom;
 
 
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/persentasediagnosa', $data);
-            $this->load->view('templates/footer');
-        } else if ($param == 'result') {
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('konsultasiinternet/diagnosa', $data);
+        $this->load->view('templates/footer');
+    }
 
-            $data['results'] = $this->input->post();
+    public function transition()
+    {
+        $getData = $this->input->post();
 
-            if (!$data['results']) {
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-            }
+        // var_dump($this->session->userdata('open_'));
+        // die;
 
-            $symptomCode = $this->session->userdata('symptomCode_');
-            $isYes = $this->session->userdata('isYes_');
-            $isFromPageOne = $this->session->userdata('isFromPageOne_');
+        $open = $this->session->userdata('open_');
+        $closed = $this->session->userdata('closed_');
+        $roots = $this->session->userdata('roots_');
 
-            var_dump($theQuestionsForPageTwo);
-            // echo "<br>";
-            // var_dump($isYes);
-            echo "<br>";
-            var_dump($isFromPageOne);
-            die;
+        $answer = $getData['radio1'];
+        $theAnswer = explode(":", $answer);
 
-            if ($isFromPageOne == '1') {
-                $data['questions'] = $theQuestionsForPageOne;
-            } else {
+        $symptomCode = $theAnswer[0];
+        $isYes = $theAnswer[1];
+        $fromRoot = $theAnswer[2];
+        $number = $theAnswer[3];
 
-                $j = 0;
+        $data = [
+            'symptomCode_' => $symptomCode,
+            'isYes_' => $isYes,
+            'fromRoot_' => $fromRoot,
+            'number_' => $number
+        ];
+        $this->session->set_userdata($data);
 
-                foreach ($theQuestionsForPageOne as $questionPageOne) {
-                    for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
-                        if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
-                            $selected[$j] = $questionPageOne;
-                            $j++;
-                        }
-                    }
-                }
-
-                foreach ($theQuestionsForPageTwo as $questionPageTwo) {
-                    for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
-                        if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
-                            $selected[$j] = $questionPageTwo;
-                            $j++;
-                        }
-                    }
-                }
-
-                $data['questions'] = $selected;
-            }
-            // var_dump($data['questions']);die;
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/hasildiagnosa', $data);
-            $this->load->view('templates/footer');
-        } else if ($param == 'unknownresult') {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('konsultasiinternet/unknownresult', $data);
-            $this->load->view('templates/footer');
+        // jika jawaban "IYA" maka pelacakan selesai dan menuju kehalaman perhitungan persentase
+        // jika jawaban "TIDAK" maka pelacakan dilanjutkan
+        if ($isYes == '1') {
+            redirect('konsultasiinternet/persentase');
         } else {
 
-            redirect('konsultasiinternet/index');
+            // memindahkan open[0] ke closed[]
+            array_push($closed, array_shift($open));
+
+            // Mengisi open[] dengan seluruh child root awal
+            if ($fromRoot == 0) {
+                for ($i = 0; $i < count($roots); $i++) {
+                    array_push($open, $roots[$i][0][1]);
+                }
+                $fromRoot++;
+                $number++;
+            } else {
+
+                if (!$_SESSION['temporary_roots_']) {
+                    // memasukkan open[0] child dari open[0] sebelumnya jika ada
+                    $i = $fromRoot - 1;
+
+                    if (count($roots[$i]) > 1) {
+
+                        $temporary_roots = [];
+                        for ($j = 1; $j < count($roots[$i]); $j++) {
+                            array_push($temporary_roots, $roots[$i][$j][1]);
+                        }
+                        $this->session->set_userdata(['temporary_roots_' => $temporary_roots]);
+                    }
+                }
+
+                if ($_SESSION['temporary_roots_']) {
+
+                    $temporary_roots = $_SESSION['temporary_roots_'];
+                    array_unshift($open, $temporary_roots[0]);
+                    array_shift($temporary_roots);
+
+                    if (count($temporary_roots) == 0) {
+                        $this->session->unset_userdata('temporary_roots_');
+                        $fromRoot++;
+                    } else {
+                        $_SESSION['temporary_roots_'] = $temporary_roots;
+                    }
+                } else {
+                    $fromRoot++;
+                }
+                $number++;
+            }
+
+            $data = [
+                'open_' => $open,
+                'closed_' => $closed,
+                'roots_' => $roots,
+                'root_' => $fromRoot,
+                'number_' => $number
+            ];
+            $this->session->set_userdata($data);
+
+            if (count($open) == 0) {
+                $this->session->set_userdata(['number_' => "1"]);
+                $this->session->unset_userdata('closed_');
+                $this->session->unset_userdata('open_');
+                $this->session->unset_userdata('root_');
+                redirect('konsultasiinternet/unknownresult');
+            }
+
+            redirect('konsultasiinternet/questions/' . $number);
         }
+    }
+
+    public function percentage()
+    {
+        // $symptomCode = $this->session->userdata('symptomCode_');
+        //     $isYes = $this->session->userdata('isYes_');
+        //     $isFromPageOne = $this->session->userdata('isFromPageOne_');
+
+        //     $data['symptomCode'] = $symptomCode;
+
+        //     if ($isFromPageOne == '1') {
+        //         $data['questions'] = $theQuestionsForPageOne;
+
+        //         var_dump($theQuestionsForPageTwo);
+        //         die;
+        //     } else {
+
+        //         // var_dump(count(array_slice($theQuestionsForPageOne[0], 3)));
+        //         // die;
+        //         $j = 0;
+
+        //         foreach ($theQuestionsForPageOne as $questionPageOne) {
+        //             for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
+        //                 if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
+        //                     $selected[$j] = $questionPageOne;
+        //                     $j++;
+        //                 }
+        //             }
+        //         }
+
+        //         foreach ($theQuestionsForPageTwo as $questionPageTwo) {
+        //             for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
+        //                 if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
+        //                     $selected[$j] = $questionPageTwo;
+        //                     $j++;
+        //                 }
+        //             }
+        //         }
+
+        //         var_dump($selected);
+        //         die;
+
+
+        //         $data['questions'] = $selected;
+        //     }
+
+        //     $data['allKodeGangguan'] = $this->session->userdata('allKodeGangguan');
+    }
+
+    public function reset()
+    {
+        $this->session->set_userdata(['number_' => "1"]);
+        $this->session->unset_userdata('closed_');
+        $this->session->unset_userdata('open_');
+        $this->session->unset_userdata('root_');
+        $this->session->unset_userdata('temporary_roots_');
+        redirect('konsultasiinternet/questions/1');
+    }
+
+    public function unknownresult()
+    {
+        var_dump($_SESSION);
+        $data['title'] = "Gangguan Internet Fiber";
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['gangguan'] = $this->Internet_model->getAllGangguan();
+        $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('konsultasiinternet/unknownresult', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function result()
+    {
+        // $data['results'] = $this->input->post();
+
+        //     if (!$data['results']) {
+        //         header('Location: ' . $_SERVER['HTTP_REFERER']);
+        //     }
+
+        //     $symptomCode = $this->session->userdata('symptomCode_');
+        //     $isYes = $this->session->userdata('isYes_');
+        //     $isFromPageOne = $this->session->userdata('isFromPageOne_');
+
+        //     var_dump($theQuestionsForPageTwo);
+        //     // echo "<br>";
+        //     // var_dump($isYes);
+        //     echo "<br>";
+        //     var_dump($isFromPageOne);
+        //     die;
+
+        //     if ($isFromPageOne == '1') {
+        //         $data['questions'] = $theQuestionsForPageOne;
+        //     } else {
+
+        //         $j = 0;
+
+        //         foreach ($theQuestionsForPageOne as $questionPageOne) {
+        //             for ($i = 0; $i < count(array_slice($questionPageOne, 3)); $i++) {
+        //                 if (array_slice($questionPageOne, 3)[$i] == $symptomCode) {
+        //                     $selected[$j] = $questionPageOne;
+        //                     $j++;
+        //                 }
+        //             }
+        //         }
+
+        //         foreach ($theQuestionsForPageTwo as $questionPageTwo) {
+        //             for ($i = 0; $i < count(array_slice($questionPageTwo, 3)); $i++) {
+        //                 if (array_slice($questionPageTwo, 3)[$i] == $symptomCode) {
+        //                     $selected[$j] = $questionPageTwo;
+        //                     $j++;
+        //                 }
+        //             }
+        //         }
+
+        //         $data['questions'] = $selected;
+        //     }
+        //     // var_dump($data['questions']);die;
+
+        //     $this->load->view('templates/header', $data);
+        //     $this->load->view('templates/sidebar', $data);
+        //     $this->load->view('templates/topbar', $data);
+        //     $this->load->view('konsultasiinternet/hasildiagnosa', $data);
+        //     $this->load->view('templates/footer');
     }
 }

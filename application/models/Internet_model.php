@@ -97,6 +97,11 @@ class Internet_model extends CI_model
         return $this->db->get_where('data_gejala_internet', ['id' => $id])->row_array();
     }
 
+    public function getGejalaByKode($kode)
+    {
+        return $this->db->get_where('data_gejala_internet', ['kode_gejala' => $kode])->row_array();
+    }
+
     public function ubahDataGejala()
     {
         $data = [
@@ -166,34 +171,31 @@ class Internet_model extends CI_model
         $this->db->join('data_gangguan_internet', 'data_gangguan_internet.kode_gangguan = gejala_gangguan_internet.kode_gangguan');
         $result = $this->db->where('gejala_gangguan_internet.kode_gejala', $kode_gejala)->get()->result_array();
 
-        if ( count($result) > 1 ) {
+        if (count($result) > 1) {
             return $result;
-        } 
+        }
     }
 
     public function getGejalaByGangguan($kode_gejala)
     {
         $result = $this->_getGangguanByKodeGejala($kode_gejala);
 
-        if ( count($result) > 1 ) {
+        if (count($result) > 1) {
 
             $allKodeGangguan = '';
 
             foreach ($result as $res) {
-                $allKodeGangguan .= $res['kode_gangguan'].'-';
+                $allKodeGangguan .= $res['kode_gangguan'] . '-';
             }
             $this->session->set_userdata($data = ['allKodeGangguan' => $allKodeGangguan]);
 
 
             $kodegangguan = $result[0]['kode_gangguan'];
-
-
         } else {
             $kodegangguan = $result[0]['kode_gangguan'];
         }
 
         return $this->_getAllGejalaCompGangguanByKodeGangguan($kodegangguan);
-
     }
 
     public function gejalaByGangguan()
@@ -210,8 +212,7 @@ class Internet_model extends CI_model
             $this->db->join('data_gangguan_internet', 'gejala_gangguan_internet.kode_gangguan = data_gangguan_internet.kode_gangguan');
             $result = $this->db->where('gejala_gangguan_internet.kode_gangguan', $gangguan['kode_gangguan'])->get()->result_array();
 
-            $problems[$i++] = $result ;
-
+            $problems[$i++] = $result;
         }
 
         return $problems;

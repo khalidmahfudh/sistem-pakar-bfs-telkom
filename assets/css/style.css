@@ -66,6 +66,16 @@ div.moto {
 	width: 130px;
 }
 
+.small.bottom-links {
+	/* color: #b30000; */
+	text-decoration: none;
+	/* transition: ease 2s; */
+}
+
+.small.bottom-links:hover {
+	text-decoration: underline;
+}
+
 /*==TOPBAR==*/
 
 nav.navbar {
@@ -194,6 +204,20 @@ img.imagehp:active {
 	box-shadow: 0 5px #666;
 	transform: translateY(4px);
 }
+
+/* open closed */
+div.code {
+	background: rgb(8, 48, 48);
+	padding: 10px;
+	border-radius: 8px;
+	margin-top: 50px;
+	width: 500px;
+}
+
+div.code code {
+	color: rgb(53, 202, 53);
+}
+
 
 /* percentation page */
 

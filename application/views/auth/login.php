@@ -44,10 +44,10 @@
 
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
+                                    <a class="small bottom-links" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/registration') ?>">Create an Account!</a>
+                                    <a class="small bottom-links" href="<?= base_url('auth/registration') ?>">Create an Account!</a>
                                 </div>
                             </div>
                         </div>
