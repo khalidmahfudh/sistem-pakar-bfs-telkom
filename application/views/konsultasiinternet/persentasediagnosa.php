@@ -31,7 +31,7 @@ $checked = $symptomCode;
     <div class="row my-2">
         <div class="col-md" id="card-container">
             <div class="card border-info mb-3">
-                <form method="post" action="<?= base_url('konsultasiinternet/diagnosa/result'); ?>" class="form">
+                <form method="post" action="<?= base_url('konsultasiinternet/result'); ?>" class="form">
                     <?php $i = 1; ?>
                     <?php foreach ($questions as $question) : ?>
 
