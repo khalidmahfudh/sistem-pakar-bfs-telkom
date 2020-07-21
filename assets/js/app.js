@@ -56,14 +56,8 @@ $(document).ready(function () {
 			output[i].innerHTML = 'Tidak';
 		} else if (slider[i].value == 1) {
 			output[i].innerHTML = 'Tidak Tau';
-		} else if (slider[i].value == 2) {
-			output[i].innerHTML = 'Sedikit Yakin';
-		} else if (slider[i].value == 3) {
-			output[i].innerHTML = 'Cukup Yakin';
-		} else if (slider[i].value == 4) {
-			output[i].innerHTML = 'Yakin';
 		} else {
-			output[i].innerHTML = 'Sangat Yakin';
+			output[i].innerHTML = 'Ya';
 		}
 	}
 
@@ -73,14 +67,8 @@ $(document).ready(function () {
 				output[i].innerHTML = 'Tidak';
 			} else if (this.value == 1) {
 				output[i].innerHTML = 'Tidak Tau';
-			} else if (this.value == 2) {
-				output[i].innerHTML = 'Sedikit Yakin';
-			} else if (this.value == 3) {
-				output[i].innerHTML = 'Cukup Yakin';
-			} else if (this.value == 4) {
-				output[i].innerHTML = 'Yakin';
 			} else {
-				output[i].innerHTML = 'Sangat Yakin';
+				output[i].innerHTML = 'Ya';
 			}
 		}
 	}
@@ -92,13 +80,7 @@ $(document).ready(function () {
 			if (this.value == 0) {
 				x = 0;
 			} else if (this.value == 1) {
-				x = 20;
-			} else if (this.value == 2) {
-				x = 40;
-			} else if (this.value == 3) {
-				x = 60;
-			} else if (this.value == 4) {
-				x = 80;
+				x = 50;
 			} else {
 				x = 100;
 			}

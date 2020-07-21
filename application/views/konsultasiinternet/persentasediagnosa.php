@@ -49,13 +49,13 @@ $checked = $symptomCode;
                                     <div class="col-sm">
                                         <div class="form-check form-check">
                                             <label class="percenContainer form-check-label" id="label">
-                                                <input class="form-check-input" type="checkbox" name="<?= $i . $j; ?>" id="<?= $i . $j ?>" style="height: 30px; width: 30px; display: inline-block;" value="<?= $i . '-' . $j; ?>" <?php if ($checked == $csq[1]) echo "checked disabled"; ?>>
+                                                <!-- <input class="form-check-input" type="hidden" name="<?= $i . $j; ?>" id="<?= $i . $j ?>" style="height: 30px; width: 30px; display: inline-block;" value="<?= $i . '-' . $j; ?>" <?php if ($checked == $csq[1]) echo "checked disabled"; ?>> -->
                                                 <h4 class="ml-4 mt-1 percenQuestions"><?= $j; ?>.apakah <?= $csq[0]; ?>?</h4>
                                                 <div class="slideContainer d-flex align-items-center">
                                                     <?php if ($checked == $csq[1]) : ?>
-                                                        <input type="range" min="0" max="5" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange disabledInput" value="5" style="Background: linear-gradient(90deg, rgb(239, 71, 64)100%, rgb(214, 214, 214)100%);" disabled>
+                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange disabledInput" value="2" style="Background: linear-gradient(90deg, rgb(239, 71, 64)100%, rgb(214, 214, 214)100%);">
                                                     <?php else : ?>
-                                                        <input type="range" min="0" max="5" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange" value="0">
+                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange" value="0">
                                                     <?php endif; ?>
                                                     <span class="value"></span>
                                                 </div>

@@ -71,10 +71,10 @@ class Konsultasiinternet extends CI_Controller
     |
     | $theRoot = Variabel ini berisi nama gejala awal (string), yang menjadi root pertanyaan di halaman pertama .
     |
-    | $theQuestionsForPageOne = Variabel ini berisi gangguan $servicesInterruptionAndSymptoms,
+    | $theQuestionsWithRoot = Variabel ini berisi gangguan $servicesInterruptionAndSymptoms,
     | yang di pecah, dan diambil bagian gangguan yang memiliki gangguan $theRoot
     |
-    | $theQuestionsForPageTwo = Variabel ini merupakan sisanya dari pemecahan $servicesInterruptionAndSymptoms,
+    | $theQuestionsWithoutRoot = Variabel ini merupakan sisanya dari pemecahan $servicesInterruptionAndSymptoms,
     | yang berisi sisanya yaitu gangguan tanpa memiliki $theRoot untuk ditampilakn pada halaman sesudahnya
     | jika user menjawab tidak pada $theRoot
     |
@@ -100,13 +100,6 @@ class Konsultasiinternet extends CI_Controller
             'theQuestionsWithoutRoot_' => $theQuestionsWithoutRoot
         ];
         $this->session->set_userdata($data2);
-
-        // $allSymptomsPerPart = [];
-        // $roots = [];
-        // $root = 0;
-        // $theQuestions berisi seluruh gangguan, tanpa gangguannya, tinggal gejala2nya aja
-        // $questions berisi seluruh gangguan, tanpa gangguannya, tinggal gejala2nya aja juga, tapi gejalanya sudah di pecah menjadia array.
-
 
         for ($i = 0; $i < count($servicesInterruptionAndSymptoms); $i++) {
             $theQuestions[$i] = array_slice($servicesInterruptionAndSymptoms[$i], 3);
@@ -177,9 +170,6 @@ class Konsultasiinternet extends CI_Controller
     {
         $getData = $this->input->post();
 
-        // var_dump($this->session->userdata('open_'));
-        // die;
-
         $open = $this->session->userdata('open_');
         $closed = $this->session->userdata('closed_');
         $roots = $this->session->userdata('roots_');
@@ -209,14 +199,6 @@ class Konsultasiinternet extends CI_Controller
             $this->session->unset_userdata('root_');
             redirect('konsultasiinternet/percentage');
         } else {
-
-            // if ($fromRoot > count($roots)) {
-            //     $this->session->set_userdata(['number_' => "1"]);
-            //     $this->session->unset_userdata('closed_');
-            //     $this->session->unset_userdata('open_');
-            //     $this->session->unset_userdata('root_');
-            //     redirect('konsultasiinternet/unknownresult');
-            // }
 
             if ($this->session->userdata('temporary_roots_') === $this->emptyArray) {
                 $this->session->unset_userdata('temporary_roots_');
@@ -348,6 +330,9 @@ class Konsultasiinternet extends CI_Controller
             $data['questions'] = $selected;
         }
 
+        $this->session->set_userdata(['questions_' => $data['questions']]);
+
+
         $data['allKodeGangguan'] = $this->session->userdata('allKodeGangguan');
 
         $this->load->view('templates/header', $data);
@@ -369,7 +354,6 @@ class Konsultasiinternet extends CI_Controller
 
     public function unknownresult()
     {
-        var_dump($_SESSION);
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
@@ -388,6 +372,110 @@ class Konsultasiinternet extends CI_Controller
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
+
+        $getData = $this->input->post();
+
+        $questions = $this->session->userdata('questions_');
+
+        for ($i = 0; $i < count($questions); $i++) {
+            $theQuestions[$i] = array_slice($questions[$i], 3);
+        }
+
+        for ($i = 0; $i < count($questions); $i++) {
+            $allGejala[$i] = array_chunk($theQuestions[$i], 2);
+        }
+
+        $getData2 = [];
+        foreach ($getData as $data) {
+            if ($data == "1") {
+                $data = "0.5" * "0.5";
+            } elseif ($data == "2") {
+                $data = "1" * "0.5";
+            } else {
+                $data = "0" * "0.5";
+            }
+            array_push($getData2, $data);
+        }
+
+        $j = 0;
+        for ($i = 0; $i < count($allGejala); $i++) {
+            $k = 0;
+            for ($l = 0; $l < count($getData2); $l++) {
+                if ($k == count($allGejala[$i])) {
+                    continue;
+                } else {
+                    array_push($allGejala[$i][$k], $getData2[$j]);
+                    $j++;
+                    $k++;
+                }
+            }
+        }
+
+        // $da =  "1" + "2.5";
+
+        // $anArray = [];
+        // $anArray[0] = $da;
+
+        // var_dump($anArray);
+
+
+        // die;
+
+        var_dump($allGejala);
+
+        echo "<br><br>";
+
+        $CFC = [];
+        for ($i = 0; $i < count($allGejala); $i++) {
+
+            if (count($allGejala[$i]) == 2) {
+                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+            } elseif (count($allGejala[$i]) == 3) {
+                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
+            } elseif (count($allGejala[$i]) == 4) {
+                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
+            } elseif (count($allGejala[$i]) == 5) {
+                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][2] * (1 - $CFC[$i]);
+            } elseif (count($allGejala[$i]) == 6) {
+                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][5][2] * (1 - $CFC[$i]);
+            } else {
+                $CFC[$i] = $allGejala[$i][0][2];
+            }
+        }
+
+        var_dump($CFC);
+        die;
+
+
+        // CFCOMBINE(CF1,CF2)     = CF1+ CF2* (1 - CF1)
+
+        //  CFCOMBINE (CF1,CF2)    = 0,2 + 0,32 * (1 - 0,2)
+        //  = 0,2 + 0,25
+        //  = 0,45 CFold
+
+        //  CFCOMBINE (CFold,CF3) = 0,45 + 0,6 * (1 - 0,45)
+        //  = 0,45 + 0,33
+        //  = 0,78 CFold
+
+        //  CFCOMBINE (CFold,CF4) = 0,78 + 0,4 * (1 - 0,78)
+        //  = 0,78 + 0,08
+        //  = 0,86 CFold
+
+        //  Prosentase keyakinan = CFCOMBINE * 100 % => 0,86  x100% = 86 %
+
+
+
+
 
         $data['results'] = $this->input->post();
 

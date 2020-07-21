@@ -56,7 +56,7 @@
                             </code>
                         </div>
                         <hr class="mt-4">
-                        <button type="submit" class="btn-diagnosis my-3" style="">SUBMIT</button>
+                        <button type="submit" class="btn-diagnosis my-3">SUBMIT</button>
                         <a href="<?= base_url('konsultasiinternet/reset'); ?>" class="ml-2">Reset Soal</a>
                     </form>
                 </div>
