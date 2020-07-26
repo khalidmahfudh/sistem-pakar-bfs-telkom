@@ -3,8 +3,8 @@
 
     <!-- Page Heading -->
     <nav class="title">
-        
-    <h1 class="h3 text-dark text-center">Daftar Gejala Pada Gangguan Layanan Internet Fiber Indihome</h1>
+
+        <h1 class="h3 text-dark text-center">Daftar Gejala Pada Gangguan Layanan Internet Fiber Indihome</h1>
     </nav>
 
     <?php if ($this->session->flashdata('flash')) : ?>
@@ -47,6 +47,7 @@
                         <th scope="col">NO</th>
                         <th scope="col">Kode Gejala</th>
                         <th scope="col">Nama Gejala</th>
+                        <th scope="col">CF Pakar</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -61,15 +62,16 @@
                             <th scope="row"><?= $i++; ?></th>
                             <td>G<?= $g['kode_gejala']; ?></td>
                             <td><?= $g['nama_gejala']; ?></td>
+                            <td><?= $g['cf_pakar']; ?></td>
                             <td>
                                 <div class="d-flex">
-                                    
-                                <a class="badge badge-warning action text-dark mr-2" href="<?= base_url(); ?>manageinternet/ubahgejala/<?= $g['id']; ?>" title="ubah data">
-                                    <i class="fas fa-fw fa-edit"></i>Edit
-                                </a>
-                                <a class="badge badge-danger action text-dark" href="<?= base_url(); ?>manageinternet/hapusgejala/<?= $g['id']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gejala']; ?>?');">
-                                    <i class="fas fa-fw fa-trash"></i>Hapus
-                                </a>
+
+                                    <a class="badge badge-warning action text-dark mr-2" href="<?= base_url(); ?>manageinternet/ubahgejala/<?= $g['id']; ?>" title="ubah data">
+                                        <i class="fas fa-fw fa-edit"></i>Edit
+                                    </a>
+                                    <a class="badge badge-danger action text-dark" href="<?= base_url(); ?>manageinternet/hapusgejala/<?= $g['id']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gejala']; ?>?');">
+                                        <i class="fas fa-fw fa-trash"></i>Hapus
+                                    </a>
                                 </div>
                             </td>
 

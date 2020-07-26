@@ -52,6 +52,7 @@ class Konsultasiinternet extends CI_Controller
 
     public function questions($number = 1)
     {
+        $this->session->unset_userdata('percentage_');
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
@@ -194,6 +195,7 @@ class Konsultasiinternet extends CI_Controller
         // jika jawaban "TIDAK" maka pelacakan dilanjutkan
         if ($isYes == '1') {
             $this->session->set_userdata(['number_' => "1"]);
+            $this->session->set_userdata(['percentage_' => true]);
             $this->session->unset_userdata('closed_');
             $this->session->unset_userdata('open_');
             $this->session->unset_userdata('root_');
@@ -208,6 +210,7 @@ class Konsultasiinternet extends CI_Controller
 
                 if (count($open) == 0) {
                     $this->session->set_userdata(['number_' => "1"]);
+                    $this->session->set_userdata(['percentage_' => true]);
                     $this->session->unset_userdata('closed_');
                     $this->session->unset_userdata('open_');
                     $this->session->unset_userdata('root_');
@@ -276,18 +279,23 @@ class Konsultasiinternet extends CI_Controller
 
             if (count($open) == 0) {
                 $this->session->set_userdata(['number_' => "1"]);
+                $this->session->set_userdata(['percentage_' => true]);
                 $this->session->unset_userdata('closed_');
                 $this->session->unset_userdata('open_');
                 $this->session->unset_userdata('root_');
                 redirect('konsultasiinternet/unknownresult');
             }
 
+            $this->session->set_userdata(['percentage_' => true]);
             redirect('konsultasiinternet/questions/' . $number);
         }
     }
 
     public function percentage()
     {
+        if (!$this->session->userdata('percentage_') || !$this->session->userdata('symptomCode_')) {
+            redirect('konsultasiinternet/questions/1');
+        }
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
@@ -373,30 +381,54 @@ class Konsultasiinternet extends CI_Controller
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
 
+
+        $this->session->unset_userdata('percentage_');
+
         $getData = $this->input->post();
 
         $questions = $this->session->userdata('questions_');
 
+        // Memisahkan gangguan, kode gangguan dan solusi, bersisa gejala2nya
         for ($i = 0; $i < count($questions); $i++) {
             $theQuestions[$i] = array_slice($questions[$i], 3);
         }
 
+        // Setelah dipisahkan, gejala2nya dipisah menjadi bagian2 array
         for ($i = 0; $i < count($questions); $i++) {
             $allGejala[$i] = array_chunk($theQuestions[$i], 2);
         }
 
-        $getData2 = [];
-        foreach ($getData as $data) {
-            if ($data == "1") {
-                $data = "0.5" * "0.5";
-            } elseif ($data == "2") {
-                $data = "1" * "0.5";
-            } else {
-                $data = "0" * "0.5";
+        // Menambahkan cf pakar di masing2 gejala
+        for ($i = 0; $i < count($allGejala); $i++) {
+            for ($j = 0; $j < count($allGejala[$i]); $j++) {
+                $cf = $this->Internet_model->getGejalaByKode($allGejala[$i][$j][1]);
+                array_push($allGejala[$i][$j], $cf['cf_pakar']);
             }
-            array_push($getData2, $data);
         }
 
+        // Mengkonversi value range menjadi angka certain factor 
+        $getData2 = [];
+        foreach ($getData as $theData) {
+            if ($theData == "1") {
+                $theData = "0.5";
+            } elseif ($theData == "2") {
+                $theData = "1";
+            } else {
+                $theData = "0";
+            }
+            array_push($getData2, $theData);
+        }
+
+        // Mengkalikan CF User dengan CF Pakar
+        $k = 0;
+        for ($i = 0; $i < count($allGejala); $i++) {
+            for ($j = 0; $j < count($allGejala[$i]); $j++) {
+                $getData2[$k] =  $getData2[$k] * $allGejala[$i][$j][2];
+                $k++;
+            }
+        }
+
+        // Menambahkan cf user x cf pakar di masing2 gejala
         $j = 0;
         for ($i = 0; $i < count($allGejala); $i++) {
             $k = 0;
@@ -411,20 +443,7 @@ class Konsultasiinternet extends CI_Controller
             }
         }
 
-        // $da =  "1" + "2.5";
-
-        // $anArray = [];
-        // $anArray[0] = $da;
-
-        // var_dump($anArray);
-
-
-        // die;
-
-        var_dump($allGejala);
-
-        echo "<br><br>";
-
+        // Memasukkan Rumus CF Combine
         $CFC = [];
         for ($i = 0; $i < count($allGejala); $i++) {
 
@@ -453,8 +472,21 @@ class Konsultasiinternet extends CI_Controller
             }
         }
 
-        var_dump($CFC);
-        die;
+        // Hasil CF Combine di konversi ke persen
+        for ($i = 0; $i < count($CFC); $i++) {
+            $CFC[$i] = $CFC[$i] * 100;
+        }
+
+        $countAllCFC = 0;
+
+
+        for ($i = 0; $i < count($CFC); $i++) {
+            $countAllCFC += $CFC[$i];
+        }
+
+        $data['cfc'] = $CFC;
+
+
 
 
         // CFCOMBINE(CF1,CF2)     = CF1+ CF2* (1 - CF1)
@@ -473,11 +505,7 @@ class Konsultasiinternet extends CI_Controller
 
         //  Prosentase keyakinan = CFCOMBINE * 100 % => 0,86  x100% = 86 %
 
-
-
-
-
-        $data['results'] = $this->input->post();
+        $data['results'] = $getData;
 
         if (!$data['results']) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -489,13 +517,6 @@ class Konsultasiinternet extends CI_Controller
         $symptomCode = $this->session->userdata('symptomCode_');
         $isYes = $this->session->userdata('isYes_');
         $fromRoot = $this->session->userdata('fromRoot_');
-
-        //     var_dump($theQuestionsForPageTwo);
-        //     // echo "<br>";
-        //     // var_dump($isYes);
-        //     echo "<br>";
-        //     var_dump($isFromPageOne);
-        //     die;
 
         if ($fromRoot == '0') {
             $data['questions'] = $theQuestionsWithRoot;

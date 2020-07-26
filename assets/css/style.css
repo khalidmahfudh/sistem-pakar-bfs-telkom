@@ -239,7 +239,7 @@ div.code code {
 }
 
 .slideContainer .disabledInput {
-	/* pointer-events: none; */
+	pointer-events: none;
 }
 
 span.value {
@@ -247,11 +247,12 @@ span.value {
 	padding-left: 10px;
 }
 
-.slider {
+.slider,
+.slider2 {
 	-webkit-appearance: none;
 	width: 60%;
 	height: 20px;
-	background: linear-gradient(90deg, rgb(214, 214, 214)60%, rgb(214, 214, 214)60%);
+	background: linear-gradient(90deg, rgb(214, 214, 214)50%, rgb(214, 214, 214)50%);
 	outline: none;
 	opacity: 0.7;
 	-webkit-transition: 0.2s;
@@ -260,7 +261,8 @@ span.value {
 	box-shadow: 0px 1px 10px 1px black;
 }
 
-.slider:hover {
+.slider:hover,
+.slider2:hover {
 	opacity: 1;
 }
 
@@ -269,7 +271,8 @@ span.value {
 }
 
 /* Google Chrome */
-.slider::-webkit-slider-thumb {
+.slider::-webkit-slider-thumb,
+.slider2::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
 	width: 40px;
@@ -277,11 +280,12 @@ span.value {
 	border: solid 0.5px #2D142C;
 	background: white;
 	border-radius: 50%;
-	cursor: ew-resize;
+	cursor: pointer;
 }
 
 /* Mozila Firefox */
-.slider::-moz-range-thumb {
+.slider::-moz-range-thumb,
+.slider2::-moz-range-thumb {
 	width: 40px;
 	height: 40px;
 	background: white;

@@ -84,9 +84,27 @@ class Internet_model extends CI_model
         $kode = explode("G", $kode);
         $kode = end($kode);
 
+        $cfpakar = $this->input->post('cfpakar');
+        $cfpakar_value = 0;
+
+        if ($cfpakar == 0) {
+            $cfpakar_value = 0;
+        } elseif ($cfpakar == 1) {
+            $cfpakar_value = 0.2;
+        } elseif ($cfpakar == 2) {
+            $cfpakar_value = 0.4;
+        } elseif ($cfpakar == 3) {
+            $cfpakar_value = 0.6;
+        } elseif ($cfpakar == 4) {
+            $cfpakar_value = 0.8;
+        } else {
+            $cfpakar_value = 1;
+        }
+
         $data = [
             "kode_gejala" => $kode,
             "nama_gejala" => $this->input->post('namagejala', true),
+            "cf_pakar" => $cfpakar_value,
         ];
 
         $this->db->insert('data_gejala_internet', $data);
@@ -104,8 +122,10 @@ class Internet_model extends CI_model
 
     public function ubahDataGejala()
     {
+
         $data = [
-            "nama_gejala" => $this->input->post('namagejala', true)
+            "nama_gejala" => $this->input->post('namagejala', true),
+            "cf_pakar" => $this->input->post('cfpakar'),
         ];
 
         $this->db->where('id', $this->input->post('id'));
