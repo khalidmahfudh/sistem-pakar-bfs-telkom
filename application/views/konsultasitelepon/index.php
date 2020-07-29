@@ -3,13 +3,13 @@
 <!-- Page Heading -->
 
 <nav class="title">
-    
-<h1 class="h3 mb-4 text-gray-800 text-center">Konsultasi <?= $title; ?></h1>
+
+    <h1 class="h3 mb-4 text-gray-800 text-center">Konsultasi <?= $title; ?></h1>
 </nav>
 
 <div class="container bg-div pt-3 pb-3 py-5" style="height: 80%">
     <div class="row">
-        <a href="<?= base_url('konsultasitelepon/diagnosa/first');  ?>" class="btn1-signal btn btn-danger btn-lg text-light my-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA SEKARANG</a>
+        <a href="<?= base_url('konsultasitelepon/questions/1');  ?>" class="btn1-signal btn btn-danger btn-lg text-light my-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA SEKARANG</a>
     </div>
 
     <?php $colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="row">
-            <img src="<?= base_url('assets/img/telepon2.png') ?>" alt="logo" class="img-signal logo-hover mx-auto d-block my-4 mx-auto">
+        <img src="<?= base_url('assets/img/telepon2.png') ?>" alt="logo" class="img-signal logo-hover mx-auto d-block my-4 mx-auto">
     </div>
 
 </div>

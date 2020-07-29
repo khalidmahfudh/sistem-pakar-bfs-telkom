@@ -142,6 +142,7 @@ class Internet_model extends CI_model
         $gejala = $this->getAllGejala();
         $keyword = $this->input->post('keyword', true);
 
+
         if (strlen($keyword) == 4) {
             $keyword = strtoupper($keyword);
             $keyword = explode("G", $keyword);
@@ -155,7 +156,9 @@ class Internet_model extends CI_model
             }
         }
 
+
         $this->db->like('nama_gejala', $keyword);
+        $this->db->or_like('cf_pakar', $keyword);
         return $this->db->get('data_gejala_internet')->result_array();
     }
 

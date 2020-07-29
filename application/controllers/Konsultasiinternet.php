@@ -29,7 +29,10 @@ class Konsultasiinternet extends CI_Controller
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
 
-
+        $this->session->unset_userdata('closed_');
+        $this->session->unset_userdata('open_');
+        $this->session->unset_userdata('root_');
+        $this->session->unset_userdata('temporary_roots_');
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -419,6 +422,7 @@ class Konsultasiinternet extends CI_Controller
             array_push($getData2, $theData);
         }
 
+
         // Mengkalikan CF User dengan CF Pakar
         $k = 0;
         for ($i = 0; $i < count($allGejala); $i++) {
@@ -427,6 +431,8 @@ class Konsultasiinternet extends CI_Controller
                 $k++;
             }
         }
+
+
 
         // Menambahkan cf user x cf pakar di masing2 gejala
         $j = 0;
@@ -448,27 +454,34 @@ class Konsultasiinternet extends CI_Controller
         for ($i = 0; $i < count($allGejala); $i++) {
 
             if (count($allGejala[$i]) == 2) {
-                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
             } elseif (count($allGejala[$i]) == 3) {
-                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][3] * (1 - $CFC[$i]);
             } elseif (count($allGejala[$i]) == 4) {
-                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][3] * (1 - $CFC[$i]);
             } elseif (count($allGejala[$i]) == 5) {
-                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][3] * (1 - $CFC[$i]);
             } elseif (count($allGejala[$i]) == 6) {
-                $CFC[$i] = $allGejala[$i][0][2] + $allGejala[$i][1][2] * (1 - $allGejala[$i][0][2]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][2] * (1 - $CFC[$i]);
-                $CFC[$i] = $CFC[$i] + $allGejala[$i][5][2] * (1 - $CFC[$i]);
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][5][3] * (1 - $CFC[$i]);
+            } elseif (count($allGejala[$i]) == 7) {
+                $CFC[$i] = $allGejala[$i][0][3] + $allGejala[$i][1][3] * (1 - $allGejala[$i][0][3]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][2][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][3][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][4][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][5][3] * (1 - $CFC[$i]);
+                $CFC[$i] = $CFC[$i] + $allGejala[$i][6][3] * (1 - $CFC[$i]);
             } else {
-                $CFC[$i] = $allGejala[$i][0][2];
+                $CFC[$i] = $allGejala[$i][0][3];
             }
         }
 

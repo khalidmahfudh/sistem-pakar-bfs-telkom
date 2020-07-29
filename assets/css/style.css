@@ -239,7 +239,7 @@ div.code code {
 }
 
 .slideContainer .disabledInput {
-	pointer-events: none;
+	/* pointer-events: none; */
 }
 
 span.value {

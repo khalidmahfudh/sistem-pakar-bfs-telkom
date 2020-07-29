@@ -9,7 +9,7 @@
 
 <div class="container">
 
-	<input type="hidden" name="kemungkinan0" value="0" class="kemungkinan"> 
+	<input type="hidden" name="kemungkinan0" value="0" class="kemungkinan">
 	<input type="hidden" name="gangguanNames0" value="-" class="gangguanNames">
 
 	<!-- Donut Chart -->
@@ -44,13 +44,12 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<a href="<?= base_url('konsultasitelepon/questions/1');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
 			</div>
-		<a href="<?= base_url('konsultasitelepon/diagnosa/first');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
 		</div>
 	</div>
-</div>
 </div>
 
 </div>
 <!-- End of Main Content -->
-

@@ -17,14 +17,9 @@ for ($i = 0; $i < count($theQuestions); $i++) {
 	$countChance[$i] = $cfc[$i];
 }
 
-
 $i = 0;
 foreach ($results as $result) {
 	$theGangguans[$i++] = $result;
-}
-
-for ($i = 0; $i < count($countChance); $i++) {
-	$percentage[$i] = round((($countChance[$i] / array_sum($cfc)) * 100), 2);
 }
 
 ?>

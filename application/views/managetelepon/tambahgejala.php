@@ -28,6 +28,13 @@
                             <small class="form-text text-danger"><i><?= form_error('namagejala'); ?></i></small>
                         </div>
 
+                        <div class="form-group">
+                            <label for="nama">CF Pakar</label><br>
+                            <input type="range" min="0" max="5" id="cfpakar" name="cfpakar" class="slider2 myRange2 mt-1" value="0">
+                            <span class="value2 ml-2"></span>
+                            <small class="form-text text-danger"><i><?= form_error('cfpakar'); ?></i></small>
+                        </div>
+
                         <div class="footer">
                             <button type="button" class="close mr-2 float-left" title="detail">
                                 <a href="<?= base_url('managetelepon/gangguan'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>

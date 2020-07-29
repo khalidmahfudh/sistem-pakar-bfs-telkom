@@ -84,9 +84,27 @@ class Telepon_model extends CI_model
         $kode = explode("G", $kode);
         $kode = end($kode);
 
+        $cfpakar = $this->input->post('cfpakar');
+        $cfpakar_value = 0;
+
+        if ($cfpakar == 0) {
+            $cfpakar_value = 0;
+        } elseif ($cfpakar == 1) {
+            $cfpakar_value = 0.2;
+        } elseif ($cfpakar == 2) {
+            $cfpakar_value = 0.4;
+        } elseif ($cfpakar == 3) {
+            $cfpakar_value = 0.6;
+        } elseif ($cfpakar == 4) {
+            $cfpakar_value = 0.8;
+        } else {
+            $cfpakar_value = 1;
+        }
+
         $data = [
             "kode_gejala" => $kode,
             "nama_gejala" => $this->input->post('namagejala', true),
+            "cf_pakar" => $cfpakar_value,
         ];
 
         $this->db->insert('data_gejala_telepon', $data);
@@ -97,10 +115,16 @@ class Telepon_model extends CI_model
         return $this->db->get_where('data_gejala_telepon', ['id' => $id])->row_array();
     }
 
+    public function getGejalaByKode($kode)
+    {
+        return $this->db->get_where('data_gejala_telepon', ['kode_gejala' => $kode])->row_array();
+    }
+
     public function ubahDataGejala()
     {
         $data = [
-            "nama_gejala" => $this->input->post('namagejala', true)
+            "nama_gejala" => $this->input->post('namagejala', true),
+            "cf_pakar" => $this->input->post('cfpakar'),
         ];
 
         $this->db->where('id', $this->input->post('id'));
@@ -131,6 +155,7 @@ class Telepon_model extends CI_model
         }
 
         $this->db->like('nama_gejala', $keyword);
+        $this->db->or_like('cf_pakar', $keyword);
         return $this->db->get('data_gejala_telepon')->result_array();
     }
 
@@ -167,34 +192,31 @@ class Telepon_model extends CI_model
         $this->db->join('data_gangguan_telepon', 'data_gangguan_telepon.kode_gangguan = gejala_gangguan_telepon.kode_gangguan');
         $result = $this->db->where('gejala_gangguan_telepon.kode_gejala', $kode_gejala)->get()->result_array();
 
-        if ( count($result) > 1 ) {
+        if (count($result) > 1) {
             return $result;
-        } 
+        }
     }
 
     public function getGejalaByGangguan($kode_gejala)
     {
         $result = $this->_getGangguanByKodeGejala($kode_gejala);
 
-        if ( count($result) > 1 ) {
+        if (count($result) > 1) {
 
             $allKodeGangguan = '';
 
             foreach ($result as $res) {
-                $allKodeGangguan .= $res['kode_gangguan'].'-';
+                $allKodeGangguan .= $res['kode_gangguan'] . '-';
             }
             $this->session->set_userdata($data = ['allKodeGangguan' => $allKodeGangguan]);
 
 
             $kodegangguan = $result[0]['kode_gangguan'];
-
-
         } else {
             $kodegangguan = $result[0]['kode_gangguan'];
         }
 
         return $this->_getAllGejalaCompGangguanByKodeGangguan($kodegangguan);
-
     }
 
     public function gejalaByGangguan()
@@ -211,8 +233,7 @@ class Telepon_model extends CI_model
             $this->db->join('data_gangguan_telepon', 'gejala_gangguan_telepon.kode_gangguan = data_gangguan_telepon.kode_gangguan');
             $result = $this->db->where('gejala_gangguan_telepon.kode_gangguan', $gangguan['kode_gangguan'])->get()->result_array();
 
-            $problems[$i++] = $result ;
-
+            $problems[$i++] = $result;
         }
 
         return $problems;
