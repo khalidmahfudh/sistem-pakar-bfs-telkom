@@ -1,21 +1,17 @@
-<?php  
-
-for ($i=0; $i < count($questions); $i++) { 
-    $theQuestions[$i] = array_slice($questions[$i],3);
+<?php
+for ($i = 0; $i < count($questions); $i++) {
+    $theQuestions[$i] = array_slice($questions[$i], 3);
 }
-
-$checked = $kode;
-
+$checked = $symptomCode;
 ?>
-
 
 <!-- Begin Page Content -->
 
 <!-- Page Heading -->
 
 <nav class="title">
-    
-<h1 class="h3 mb-4 text-gray-800 text-center">Diagnosa <?= $title; ?></h1>
+
+    <h1 class="h3 mb-4 text-gray-800 text-center">Diagnosa <?= $title; ?></h1>
 </nav>
 
 <div class="container">
@@ -30,12 +26,12 @@ $checked = $kode;
     </div>
     <div class="row my-2">
         <div class="col-md" id="card-container">
-            <div class="card border-info mb-3" style="">
-                <form method="post" action="<?= base_url('konsultasiuseetv/diagnosa/result'); ?>" class="form">        
+            <div class="card border-info mb-3">
+                <form method="post" action="<?= base_url('konsultasiuseetv/result'); ?>" class="form">
                     <?php $i = 1; ?>
                     <?php foreach ($questions as $question) : ?>
 
-                        <?php 
+                        <?php
                         $sliceQuestion = array_slice($question, 3);
                         $chunkSliceQuestion = array_chunk($sliceQuestion, 2);
                         ?>
@@ -48,9 +44,16 @@ $checked = $kode;
                                 <div class="row ml-2">
                                     <div class="col-sm">
                                         <div class="form-check form-check">
-                                            <label class="form-check-label" id="label">
-                                                <input class="form-check-input mr-3" type="checkbox" name="<?= $i.$j; ?>" id="<?= $i.$j ?>"  style="height: 30px; width: 30px; display: inline-block;" value="<?= $i.'-'.$j; ?>" <?php if($checked == $csq[1]) echo "checked"; ?>>
-                                                <h4 class="ml-4 mt-1"><?= $j++; ?>.apakah <?= $csq[0]; ?>?</h4>
+                                            <label class="percenContainer form-check-label" id="label">
+                                                <h4 class="mt-1 percenQuestions"><?= $j; ?>. apakah <?= $csq[0]; ?>?</h4>
+                                                <div class="slideContainer d-flex align-items-center">
+                                                    <?php if ($checked == $csq[1]) : ?>
+                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange disabledInput" value="5" style="Background: linear-gradient(90deg, rgb(239, 71, 64)100%, rgb(214, 214, 214)100%);">
+                                                    <?php else : ?>
+                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange" value="0">
+                                                    <?php endif; ?>
+                                                    <span class="value"></span>
+                                                </div>
                                             </label>
                                         </div>
                                     </div>
@@ -72,5 +75,3 @@ $checked = $kode;
 
 </div>
 <!-- End of Main Content -->
-
-

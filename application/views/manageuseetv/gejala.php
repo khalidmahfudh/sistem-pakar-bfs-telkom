@@ -48,6 +48,7 @@
                         <th scope="col">NO</th>
                         <th scope="col">Kode Gejala</th>
                         <th scope="col">Nama Gejala</th>
+                        <th scope="col">CF Pakar</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -62,6 +63,7 @@
                             <th scope="row"><?= $i++; ?></th>
                             <td>G<?= $g['kode_gejala']; ?></td>
                             <td><?= $g['nama_gejala']; ?></td>
+                            <td><?= $g['cf_pakar']; ?></td>
                             <td>
                                 <div class="d-flex">
 
