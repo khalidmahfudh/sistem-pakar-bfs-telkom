@@ -154,3 +154,25 @@ $(document).ready(function () {
 		});
 	}
 });
+
+$(window).scroll(function () {
+	var wScroll = $(this).scrollTop();
+
+	if (wScroll > 339) {
+		$('.section-dua-gambar').css("animation", "fade-home-btn 2s");
+		$('.section-dua-gambar').css("opacity", "1");
+		$('.section-dua-paragraf').css("animation", "paragraf-about-dua 2.5s");
+		$('.section-dua-paragraf').css("opacity", "1");
+	}
+
+	if (wScroll > 639) {
+		$('.section-tiga-gambar-satu').css("animation", "fade-home-btn 2s");
+		$('.section-tiga-gambar-satu').css("opacity", "1");
+		$('.section-tiga-gambar-dua').css("animation", "paragraf-about-satu 2.5s");
+		$('.section-tiga-gambar-dua').css("opacity", "1");
+		$('.section-tiga-gambar-tiga').css("animation", "paragraf-about-dua 2.5s");
+		$('.section-tiga-gambar-tiga').css("opacity", "1");
+		$('.section-tiga-paragraf').css("animation", "fade-home-btn 3.5s");
+		$('.section-tiga-paragraf').css("opacity", "1");
+	}
+});

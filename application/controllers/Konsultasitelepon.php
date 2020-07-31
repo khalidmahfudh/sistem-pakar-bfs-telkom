@@ -21,17 +21,7 @@ class Konsultasitelepon extends CI_Controller
         $this->load->model('Telepon_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
-        // $this->session->unset_userdata('theQuestionsWithRoot_');
-        // $this->session->unset_userdata('theQuestionsWithoutRoot_');
-        // $this->session->unset_userdata('roots_');
-        // $this->session->unset_userdata('symptomCode_');
-        // $this->session->unset_userdata('isYes_');
-        // $this->session->unset_userdata('fromRoot_');
-        // $this->session->unset_userdata('number_');
-        // $this->session->unset_userdata('questions_');
-        // $this->session->unset_userdata('open_');
-        // $this->session->unset_userdata('closed_');
-        // $this->session->unset_userdata('root_');
+
     }
     public function index()
     {
