@@ -19,7 +19,7 @@ $checked = $symptomCode;
         <div class="col-md-8">
             <ul class="list-group">
                 <li class="list-group-item text-danger border-left-danger">
-                    KETERANGAN : Jika ada pernyataan tidak dijawab, maka sama saja anda memilih "TIDAK".
+                    KETERANGAN : Geserlah slider dibawah berdasarkan keyakinan terjadinya gejala.
                 </li>
             </ul>
         </div>

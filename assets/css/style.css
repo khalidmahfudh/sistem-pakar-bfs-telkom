@@ -232,6 +232,9 @@ img.imagehp:active {
 .section-satu {
 	padding: 50px;
 	background: #F35A43;
+	border-bottom-right-radius: 34px;
+	border-top-right-radius: 34px;
+
 }
 
 .section-satu-paragraf {

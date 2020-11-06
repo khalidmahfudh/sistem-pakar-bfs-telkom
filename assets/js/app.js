@@ -165,7 +165,7 @@ $(window).scroll(function () {
 		$('.section-dua-paragraf').css("opacity", "1");
 	}
 
-	if (wScroll > 639) {
+	if (wScroll > 759) {
 		$('.section-tiga-gambar-satu').css("animation", "fade-home-btn 2s");
 		$('.section-tiga-gambar-satu').css("opacity", "1");
 		$('.section-tiga-gambar-dua').css("animation", "paragraf-about-satu 2.5s");

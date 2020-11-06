@@ -70,7 +70,7 @@
                                     <a class="badge badge-warning action text-dark mr-2" href="<?= base_url(); ?>manageinternet/ubahgangguan/<?= $g['id']; ?>" title="ubah data">
                                         <i class="fas fa-fw fa-edit"></i>Ubah
                                     </a>
-                                    <a class="badge badge-danger action text-dark" href="<?= base_url(); ?>manageinternet/hapusgangguan/<?= $g['id']; ?>/<?= $g['kode_gangguan']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gangguan']; ?>?');">
+                                    <a class="badge badge-danger action text-light" href="<?= base_url(); ?>manageinternet/hapusgangguan/<?= $g['id']; ?>/<?= $g['kode_gangguan']; ?>" title="hapus data" onclick="return confirm('yakin menghapus <?= $g['nama_gangguan']; ?>?');">
                                         <i class="fas fa-fw fa-trash"></i>Hapus
                                     </a>
 

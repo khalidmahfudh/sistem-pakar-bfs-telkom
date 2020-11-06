@@ -36,13 +36,13 @@
 
             <!-- Siapkan Sub-Menu Sesuai Menu -->
             <?php
-                $menuId = $m['id'];
-                $querySubMenu = "SELECT * FROM `user_sub_menu`
+            $menuId = $m['id'];
+            $querySubMenu = "SELECT * FROM `user_sub_menu`
                     WHERE `menu_id` = $menuId
                     AND `is_active` = 1
                 ";
-                $subMenu = $this->db->query($querySubMenu)->result_array();
-                ?>
+            $subMenu = $this->db->query($querySubMenu)->result_array();
+            ?>
 
             <?php foreach ($subMenu as $sm) : ?>
                 <!-- Nav Item -->
@@ -61,7 +61,7 @@
 
             <!-- Nav Item - Log out -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
+                <a class="nav-link" href="<?= base_url('auth/logout'); ?>" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span class="title">Log Out</span></a>
             </li>
