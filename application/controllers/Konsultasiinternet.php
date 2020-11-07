@@ -19,6 +19,7 @@ class Konsultasiinternet extends CI_Controller
 
 
         $this->load->model('Internet_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
     }
@@ -26,6 +27,7 @@ class Konsultasiinternet extends CI_Controller
     {
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
 
@@ -33,6 +35,7 @@ class Konsultasiinternet extends CI_Controller
         $this->session->unset_userdata('open_');
         $this->session->unset_userdata('root_');
         $this->session->unset_userdata('temporary_roots_');
+        $this->session->unset_userdata('number_');
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -44,6 +47,7 @@ class Konsultasiinternet extends CI_Controller
     {
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguanById'] = $this->Internet_model->getGangguanById($id);
 
         $this->load->view('templates/header', $data);
@@ -58,7 +62,9 @@ class Konsultasiinternet extends CI_Controller
         $this->session->unset_userdata('percentage_');
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
+        var_dump($data['gejalaByGangguan']);die;
 
         if ($number == 0) {
             $number = 1;
@@ -301,6 +307,7 @@ class Konsultasiinternet extends CI_Controller
         }
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
 
         $symptomCode = $this->session->userdata('symptomCode_');
@@ -367,6 +374,7 @@ class Konsultasiinternet extends CI_Controller
     {
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
 
@@ -381,6 +389,7 @@ class Konsultasiinternet extends CI_Controller
     {
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Internet_model->getAllGejalaCompGangguan();
 

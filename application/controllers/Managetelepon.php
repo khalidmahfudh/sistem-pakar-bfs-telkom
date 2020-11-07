@@ -11,6 +11,7 @@ class Managetelepon extends CI_Controller
 
 
         $this->load->model('Telepon_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
     }
@@ -19,6 +20,7 @@ class Managetelepon extends CI_Controller
     {
         $data['title'] = "Manage Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->load->view('templates/pakarheader', $data);
         $this->load->view('templates/sidebar', $data);
@@ -31,6 +33,7 @@ class Managetelepon extends CI_Controller
     {
         $data['title'] = "Manage Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         if ($this->input->post('keyword')) {
             $data['gangguan'] = $this->Telepon_model->cariDataGangguan();
@@ -50,6 +53,7 @@ class Managetelepon extends CI_Controller
         $data['title'] = 'Manage Telepon Rumah';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -72,6 +76,7 @@ class Managetelepon extends CI_Controller
         $data['title'] = 'Manage Telepon Rumah';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Telepon_model->getGangguanById($id);
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -104,6 +109,7 @@ class Managetelepon extends CI_Controller
     {
         $data['title'] = "Manage Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
 
         if ($this->input->post('keyword')) {
@@ -124,6 +130,7 @@ class Managetelepon extends CI_Controller
         $data['title'] = 'Manage Telepon Rumah';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Telepon_model->getAllGejala();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -145,6 +152,7 @@ class Managetelepon extends CI_Controller
         $data['title'] = 'Manage Telepon Rumah';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Telepon_model->getGejalaById($id);
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -175,7 +183,8 @@ class Managetelepon extends CI_Controller
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['gejala'] = $this->Telepon_model->getAllGejala();
-
+        $data['requests'] = $this->Request_model->getAllData();
+        
         $this->load->view('templates/pakarheader', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);

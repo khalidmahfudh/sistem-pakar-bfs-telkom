@@ -5,19 +5,61 @@ class Internet_model extends CI_model
     // Gangguan
     public function getAllGangguan()
     {
-        return $this->db->get('data_gangguan_internet')->result_array();
+        // return $this->db->get('data_gangguan_internet')->result_array();
+        return $this->db->order_by('kode_gangguan','ASC')->get_where('data_gangguan_internet',['is_active' => 1])->result_array();
+    }
+    public function getAllGangguanWithIsActiveZero()
+    {
+        return $this->db->order_by('kode_gangguan','ASC')->get_where('data_gangguan_internet',['is_active' => 0])->result_array();
     }
 
-    public function tambahDataGangguan()
+    public function tambahDataGangguan($data_user)
     {
+        $is_active = 1;
+        $role_id = $data_user['role_id'];
+
         $kode = $this->input->post('kodegangguan');
         $kode = explode("P", $kode);
         $kode = end($kode);
+
+        if ($data_user['role_id'] == 3) {
+
+            $data = [
+                "request" => "Tambah Data Gangguan",
+                "layanan" => "Internet Fiber",
+                "kode" => $kode,
+                "name" => $data_user['name'],
+                "image" => $data_user['image'],
+            ];
+
+            $this->db->insert('user_requests', $data);
+
+            $is_active = 0;
+        }
+
+        //
+
+        $gangguan = $this->getAllGangguan();
+
+        $kode_akhir = end($gangguan)['kode_gangguan'];
+
+        for ($i=0; $i < count($gangguan); $i++) { 
+    
+            if ($kode == $gangguan[$i]['kode_gangguan'])
+            { 
+                $kode = $kode_akhir + 1;
+                break;
+            }
+        }
+
+        //
+
 
         $data = [
             "kode_gangguan" => $kode,
             "nama_gangguan" => $this->input->post('namagangguan', true),
             "solusi_gangguan" => $this->input->post('solusi', true),
+            "is_active" => $is_active,
         ];
 
         $this->db->insert('data_gangguan_internet', $data);

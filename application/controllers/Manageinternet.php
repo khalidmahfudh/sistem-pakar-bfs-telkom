@@ -10,14 +10,17 @@ class Manageinternet extends CI_Controller
         is_logged_in();
 
         $this->load->model('Internet_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
+        
     }
 
     public function index()
     {
         $data['title'] = "Manage Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         if ($this->input->post('keyword')) {
             $data['gangguan'] = $this->Internet_model->cariDataGangguan();
@@ -36,6 +39,8 @@ class Manageinternet extends CI_Controller
     {
         $data['title'] = "Manage Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
+
 
         if ($this->input->post('keyword')) {
             $data['gangguan'] = $this->Internet_model->cariDataGangguan();
@@ -55,6 +60,12 @@ class Manageinternet extends CI_Controller
         $data['title'] = 'Manage Internet Fiber';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
+        $data['requests'] = $this->Request_model->getAllData();
+
+
+
+        $role_id = $this->session->userdata('role_id');
+
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -66,8 +77,18 @@ class Manageinternet extends CI_Controller
             $this->load->view('manageinternet/tambahgangguan', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->Internet_model->tambahDataGangguan();
-            $this->session->set_flashdata('flash', 'Ditambahkan');
+
+            $data_user = $data['user'];
+
+            $this->Internet_model->tambahDataGangguan($data_user);
+
+            if ($role_id == 3){
+                $this->session->set_flashdata('flash', 'Menunggu Persetujuan Pakar');
+            }
+            else {
+                $this->session->set_flashdata('flash', 'Ditambahkan');
+            }
+            
             redirect('manageinternet/gangguan');
         }
     }
@@ -77,6 +98,8 @@ class Manageinternet extends CI_Controller
         $data['title'] = 'Manage Internet Rumah';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Internet_model->getGangguanById($id);
+        $data['requests'] = $this->Request_model->getAllData();
+
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -106,6 +129,7 @@ class Manageinternet extends CI_Controller
     {
         $data['title'] = "Manage Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $data['gejala'] = $this->Internet_model->getAllGejala();
 
@@ -127,6 +151,7 @@ class Manageinternet extends CI_Controller
         $data['title'] = 'Manage Internet Fiber';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Internet_model->getAllGejala();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -148,6 +173,8 @@ class Manageinternet extends CI_Controller
         $data['title'] = 'Manage Internet Fiber';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Internet_model->getGejalaById($id);
+        $data['requests'] = $this->Request_model->getAllData();
+
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -176,6 +203,7 @@ class Manageinternet extends CI_Controller
     {
         $data['title'] = "Manage Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['gejala'] = $this->Internet_model->getAllGejala();
 

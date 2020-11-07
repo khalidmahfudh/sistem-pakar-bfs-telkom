@@ -13,11 +13,13 @@ class Homepage extends CI_Controller
 
 		$this->load->library('form_validation');
 		$this->load->helper('form');
+		$this->load->model('Request_model');
 	}
 	public function index()
 	{
 		$data['title'] = "Home Page";
 		$data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+		$data['requests'] = $this->Request_model->getAllData();
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar', $data);

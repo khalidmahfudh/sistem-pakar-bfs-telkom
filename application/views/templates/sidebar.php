@@ -20,7 +20,9 @@
                     ORDER BY `user_access_menu`.`menu_id` ASC 
                     ";
         $menu = $this->db->query($queryMenu)->result_array();
+
         ?>
+
 
 
         <!-- Looping Menu-->
@@ -42,6 +44,12 @@
                     AND `is_active` = 1
                 ";
             $subMenu = $this->db->query($querySubMenu)->result_array();
+
+            if ($menuId == 1 && $role_id == 3) {
+                // array_pop($subMenu);
+                // array_pop($subMenu);
+            }
+
             ?>
 
             <?php foreach ($subMenu as $sm) : ?>

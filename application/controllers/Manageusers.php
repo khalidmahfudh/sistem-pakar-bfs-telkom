@@ -7,9 +7,15 @@ class Manageusers extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        is_logged_in();
+
+        $role_id = $this->session->userdata('role_id');
+
+        if($role_id != 1) {
+            redirect('auth/blocked');
+        } 
 
         $this->load->model('User_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
     }
@@ -17,7 +23,7 @@ class Manageusers extends CI_Controller
     {
         $data['title'] = "Manage Users";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
-
+        $data['requests'] = $this->Request_model->getAllData();
 
         if ($this->input->post('keyword')) {
             $data['all_user'] = $this->User_model->cariDataUser();
@@ -38,6 +44,7 @@ class Manageusers extends CI_Controller
         $data['title'] = 'Manage Users';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['all_user'] = $this->User_model->getAllUser();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
@@ -48,8 +55,6 @@ class Manageusers extends CI_Controller
             'min_length' => 'password too short!'
         ]);
         $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
-
-
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Manage Users';
@@ -82,6 +87,7 @@ class Manageusers extends CI_Controller
         $data['title'] = 'Manage Users';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['single_user'] = $this->User_model->getUserById($id);
+        $data['requests'] = $this->Request_model->getAllData();        
 
         $this->form_validation->set_rules('name', 'Nama', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');

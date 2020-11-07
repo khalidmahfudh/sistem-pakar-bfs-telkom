@@ -9,15 +9,16 @@ class Manageuseetv extends CI_Controller
         is_logged_in();
 
         $this->load->model('Useetv_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
     }
-
 
     public function index()
     {
         $data['title'] = "Manage UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->load->view('templates/pakarheader', $data);
         $this->load->view('templates/sidebar', $data);
@@ -30,6 +31,7 @@ class Manageuseetv extends CI_Controller
     {
         $data['title'] = "Manage UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         if ($this->input->post('keyword')) {
             $data['gangguan'] = $this->Useetv_model->cariDataGangguan();
@@ -49,6 +51,7 @@ class Manageuseetv extends CI_Controller
         $data['title'] = 'Manage UseeTV';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Useetv_model->getAllGangguan();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -71,6 +74,7 @@ class Manageuseetv extends CI_Controller
         $data['title'] = 'Manage UseeTV';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Useetv_model->getGangguanById($id);
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
@@ -100,7 +104,7 @@ class Manageuseetv extends CI_Controller
     {
         $data['title'] = "Manage UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
-
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejala'] = $this->Useetv_model->getAllGejala();
 
         if ($this->input->post('keyword')) {
@@ -121,6 +125,7 @@ class Manageuseetv extends CI_Controller
         $data['title'] = 'Manage UseeTV';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Useetv_model->getAllGejala();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -142,6 +147,7 @@ class Manageuseetv extends CI_Controller
         $data['title'] = 'Manage UseeTV';
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gejala'] = $this->Useetv_model->getGejalaById($id);
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
@@ -168,10 +174,11 @@ class Manageuseetv extends CI_Controller
 
     public function rules()
     {
-        $data['title'] = "Manage UseeTV Rumah";
+        $data['title'] = "Manage UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Useetv_model->getAllGangguan();
         $data['gejala'] = $this->Useetv_model->getAllGejala();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->load->view('templates/pakarheader', $data);
         $this->load->view('templates/sidebar', $data);

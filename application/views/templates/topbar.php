@@ -1,4 +1,5 @@
-<!-- Content Wrapper -->
+
+            <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
 
     <!-- Main Content -->
@@ -21,6 +22,38 @@
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown no-arrow mx-1 rounded-circle">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw text-dark"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-light badge-counter text-danger"><?= count($requests); ?></span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header bg-dark">
+                  Notifications
+                </h6>
+                <?php foreach ($requests as $request) : ?>
+
+                <div class="dropdown-item d-flex align-items-center">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="<?= base_url('assets/img/profile/') . $request['image']; ?>" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">Hi Pakar! Request <?= $request['request'] . " " . $request['layanan']; ?></div>
+                    <div class="small text-gray-500"><?= $request['name'] ?> &nbsp<h6 class="d-inline"><a href=""><span class="badge badge-primary">TERIMA</span></a></h6>&nbsp<h6 class="d-inline"><a href=""><span class="badge badge-danger">TOLAK</span></a></h6>
+                    </div>
+                  </div>
+                </div>
+
+            <?php endforeach; ?>
+             <a class="dropdown-item text-center small text-gray-500" href="<?=base_url('requests');?>">Read More Requests</a>
+
+                
+                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> -->
+              </div>
+            </li>
 
                 <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -48,3 +81,4 @@
 
         </nav>
         <!-- End of Topbar -->
+

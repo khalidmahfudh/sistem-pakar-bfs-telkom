@@ -19,6 +19,7 @@ class Konsultasiuseetv extends CI_Controller
 
 
         $this->load->model('Useetv_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
     }
@@ -26,6 +27,7 @@ class Konsultasiuseetv extends CI_Controller
     {
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Useetv_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Useetv_model->getAllGejalaCompGangguan();
 
@@ -33,6 +35,7 @@ class Konsultasiuseetv extends CI_Controller
         $this->session->unset_userdata('open_');
         $this->session->unset_userdata('root_');
         $this->session->unset_userdata('temporary_roots_');
+        $this->session->unset_userdata('number_');
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -44,6 +47,7 @@ class Konsultasiuseetv extends CI_Controller
     {
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();      
         $data['gangguanById'] = $this->Useetv_model->getGangguanById($id);
 
         $this->load->view('templates/header', $data);
@@ -58,6 +62,7 @@ class Konsultasiuseetv extends CI_Controller
         $this->session->unset_userdata('percentage_');
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Useetv_model->gejalaByGangguan2();
 
         if ($number == 0) {
@@ -301,6 +306,7 @@ class Konsultasiuseetv extends CI_Controller
         }
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Useetv_model->gejalaByGangguan2();
 
         $symptomCode = $this->session->userdata('symptomCode_');
@@ -367,6 +373,7 @@ class Konsultasiuseetv extends CI_Controller
     {
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();        
         $data['gangguan'] = $this->Useetv_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Useetv_model->getAllGejalaCompGangguan();
 
@@ -381,6 +388,7 @@ class Konsultasiuseetv extends CI_Controller
     {
         $data['title'] = "Gangguan UseeTV";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Useetv_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Useetv_model->getAllGejalaCompGangguan();
 

@@ -19,6 +19,7 @@ class Konsultasitelepon extends CI_Controller
 
 
         $this->load->model('Telepon_model');
+        $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
 
@@ -27,6 +28,7 @@ class Konsultasitelepon extends CI_Controller
     {
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Telepon_model->getAllGejalaCompGangguan();
 
@@ -34,6 +36,7 @@ class Konsultasitelepon extends CI_Controller
         $this->session->unset_userdata('open_');
         $this->session->unset_userdata('root_');
         $this->session->unset_userdata('temporary_roots_');
+        $this->session->unset_userdata('number_');
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -45,6 +48,7 @@ class Konsultasitelepon extends CI_Controller
     {
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();   
         $data['gangguanById'] = $this->Telepon_model->getGangguanById($id);
 
         $this->load->view('templates/header', $data);
@@ -59,6 +63,7 @@ class Konsultasitelepon extends CI_Controller
         $this->session->unset_userdata('percentage_');
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Telepon_model->gejalaByGangguan2();
 
         if ($number == 0) {
@@ -306,6 +311,7 @@ class Konsultasitelepon extends CI_Controller
         }
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Telepon_model->gejalaByGangguan2();
 
         $symptomCode = $this->session->userdata('symptomCode_');
@@ -372,6 +378,7 @@ class Konsultasitelepon extends CI_Controller
     {
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Telepon_model->getAllGejalaCompGangguan();
 
@@ -386,6 +393,7 @@ class Konsultasitelepon extends CI_Controller
     {
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['gejalaGangguan'] = $this->Telepon_model->getAllGejalaCompGangguan();
 

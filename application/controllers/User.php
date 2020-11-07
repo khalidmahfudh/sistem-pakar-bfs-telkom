@@ -10,11 +10,13 @@ class User extends CI_Controller
 
         $this->load->library('form_validation');
         $this->load->model('User_model');
+        $this->load->model('Request_model');
     }
     public function index()
     {
         $data['title'] = "My Profile";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -26,6 +28,7 @@ class User extends CI_Controller
     {
         $data['title'] = "Edit Profile";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+        $data['requests'] = $this->Request_model->getAllData();        
 
         $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
 
@@ -47,7 +50,8 @@ class User extends CI_Controller
     {
         $data['title'] = "Ubah Password";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
-
+        $data['requests'] = $this->Request_model->getAllData();
+        
         $this->form_validation->set_rules('current_password', 'Current Password', 'required|trim');
         $this->form_validation->set_rules('new_password1', 'New Password', 'required|trim|min_length[3]|matches[new_password2]');
         $this->form_validation->set_rules('new_password2', 'Confirm New Password', 'required|trim|min_length[3]|matches[new_password1]');
