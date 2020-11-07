@@ -4,6 +4,10 @@ $cf_count = 6;
 
 ?>
 <div class="container">
+    <!-- Page Heading -->
+    <nav class="title">        
+    <h1 class="h3 text-dark text-center">Ubah Data Gejala Televisi Interaktif (UseeTV)</h1>
+    </nav>
     <div class="row mt-3">
         <div class="col-md-6">
 
@@ -40,10 +44,8 @@ $cf_count = 6;
                         </div>
 
                         <div class="footer">
-                            <button type="button" class="close mr-2 float-left" title="detail">
-                                <a href="<?= base_url('manageuseetv/gejala'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>
-                            </button>
-                            <button type="submit" name="ubah" class="btn btn-outline-dark float-right">Ubah Data Gejala</button>
+                            <a href="<?= base_url('manageuseetv/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
+                            <button type="submit" name="ubah" class="btn btn-dark float-right">Ubah Data Gejala</button>
                         </div>
 
                     </form>

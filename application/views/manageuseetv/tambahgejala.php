@@ -1,6 +1,8 @@
 <div class="container">
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Tambah Data Gejala Gangguan Telepon Rumah</h1>
+    <nav class="title">        
+    <h1 class="h3 text-dark text-center">Tambah Data Gejala Televisi Interaktif (UseeTV)</h1>
+    </nav>
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="card">
@@ -36,10 +38,8 @@
                         </div>
 
                         <div class="footer">
-                            <button type="button" class="close mr-2 float-left" title="detail">
-                                <a href="<?= base_url('manageuseetv/gangguan'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>
-                            </button>
-                            <button type="submit" name="tambah" class="btn btn-outline-dark float-right">Tambah Data Gejala</button>
+                            <a href="<?= base_url('manageuseetv/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
+                            <button type="submit" name="tambah" class="btn btn-dark float-right">Tambah Data Gejala</button>
                         </div>
                     </form>
                 </div>

@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <?
+    <?php
     $action = $this->input->post('submit');
 
     $ct = $this->input->post('gangguan');

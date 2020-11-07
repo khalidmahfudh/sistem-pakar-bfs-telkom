@@ -5,7 +5,11 @@ class Internet_model extends CI_model
     // Gangguan
     public function getAllGangguan()
     {
+        return $this->db->order_by('kode_gangguan', 'ASC')->get('data_gangguan_internet')->result_array();
         // return $this->db->get('data_gangguan_internet')->result_array();
+    }
+    public function getAllGangguanWithIsActiveOne()
+    {
         return $this->db->order_by('kode_gangguan', 'ASC')->get_where('data_gangguan_internet', ['is_active' => 1])->result_array();
     }
     public function getAllGangguanWithIsActiveZero()

@@ -13,7 +13,6 @@ class Manageinternet extends CI_Controller
         $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
-        
     }
 
     public function index()
@@ -45,7 +44,7 @@ class Manageinternet extends CI_Controller
         if ($this->input->post('keyword')) {
             $data['gangguan'] = $this->Internet_model->cariDataGangguan();
         } else {
-            $data['gangguan'] = $this->Internet_model->getAllGangguan();
+            $data['gangguan'] = $this->Internet_model->getAllGangguanWithIsActiveOne();
         }
 
         $this->load->view('templates/pakarheader', $data);
@@ -61,8 +60,6 @@ class Manageinternet extends CI_Controller
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['gangguan'] = $this->Internet_model->getAllGangguan();
         $data['requests'] = $this->Request_model->getAllData();
-
-
 
         $role_id = $this->session->userdata('role_id');
 
@@ -82,13 +79,12 @@ class Manageinternet extends CI_Controller
 
             $this->Internet_model->tambahDataGangguan($data_user);
 
-            if ($role_id == 3){
+            if ($role_id == 3) {
                 $this->session->set_flashdata('flash', 'Menunggu Persetujuan Pakar');
-            }
-            else {
+            } else {
                 $this->session->set_flashdata('flash', 'Ditambahkan');
             }
-            
+
             redirect('manageinternet/gangguan');
         }
     }

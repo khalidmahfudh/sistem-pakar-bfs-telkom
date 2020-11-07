@@ -28,18 +28,17 @@ class Requests extends CI_Controller
     public function accept($id_gangguan, $id_request)
     {
 
-        $this->Request_model->accept($id_gangguan,$id_request);
+        $this->Request_model->accept($id_gangguan, $id_request);
         $this->session->set_flashdata('flash', 'Dipermohonkan');
 
         redirect('requests');
     }
 
-    public function reject($id,$kode)
+    public function reject($id_gangguan, $id_request)
     {
-        $this->Request_model->reject($id,$kode);
-        $this->session->set_flashdata('flash', 'Diubah');
+        $this->Request_model->reject($id_gangguan, $id_request);
+        $this->session->set_flashdata('flash', 'Ditolak');
 
         redirect('requests');
     }
-    
 };

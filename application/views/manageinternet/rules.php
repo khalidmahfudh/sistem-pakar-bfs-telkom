@@ -1,4 +1,7 @@
 
+<?php  
+// die();
+?>
 <!--Begin Page Content -->
 <div class="container-fluid">
 
@@ -54,7 +57,7 @@
         </div>
     </div>
 
-    <?
+    <?php
     $action = $this->input->post('submit');
 
 
@@ -114,6 +117,7 @@
                             <!-- disini digunakan hidden input agar bisa mengirim kode_gangguan dari form1 -->
                             <input type="hidden" name="kode_gangguan" value="<?= $kode; ?>">
 
+                            <a href="<?= base_url('manageinternet/tambahgejala');?>">Tambahkan gejala jika gejala dibawah tidak ada yang sesuai</a>
 
                             <?php foreach ($gejala as $g) :
 

@@ -4,6 +4,9 @@ $cf_count = 6;
 
 ?>
 <div class="container">
+    <nav class="title">        
+    <h1 class="h3 text-dark text-center">Ubah Data Gejala Telepon Rumah</h1>
+    </nav>
     <div class="row mt-3">
         <div class="col-md-6">
 
@@ -39,11 +42,9 @@ $cf_count = 6;
                             <small class="form-text text-danger"><i><?= form_error('cfpakar'); ?></i></small>
                         </div>
 
-                        <div class="footer">
-                            <button type="button" class="close mr-2 float-left" title="detail">
-                                <a href="<?= base_url('managetelepon/gejala'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>
-                            </button>
-                            <button type="submit" name="ubah" class="btn btn-outline-dark float-right">Ubah Data Gejala</button>
+                         <div class="footer">
+                            <a href="<?= base_url('managetelepon/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
+                            <button type="submit" name="ubah" class="btn btn-dark float-right">Ubah Data Gejala</button>
                         </div>
 
                     </form>
