@@ -6,11 +6,11 @@ class Internet_model extends CI_model
     public function getAllGangguan()
     {
         // return $this->db->get('data_gangguan_internet')->result_array();
-        return $this->db->order_by('kode_gangguan','ASC')->get_where('data_gangguan_internet',['is_active' => 1])->result_array();
+        return $this->db->order_by('kode_gangguan', 'ASC')->get_where('data_gangguan_internet', ['is_active' => 1])->result_array();
     }
     public function getAllGangguanWithIsActiveZero()
     {
-        return $this->db->order_by('kode_gangguan','ASC')->get_where('data_gangguan_internet',['is_active' => 0])->result_array();
+        return $this->db->order_by('kode_gangguan', 'ASC')->get_where('data_gangguan_internet', ['is_active' => 0])->result_array();
     }
 
     public function tambahDataGangguan($data_user)
@@ -22,38 +22,19 @@ class Internet_model extends CI_model
         $kode = explode("P", $kode);
         $kode = end($kode);
 
-        if ($data_user['role_id'] == 3) {
-
-            $data = [
-                "request" => "Tambah Data Gangguan",
-                "layanan" => "Internet Fiber",
-                "kode" => $kode,
-                "name" => $data_user['name'],
-                "image" => $data_user['image'],
-            ];
-
-            $this->db->insert('user_requests', $data);
-
-            $is_active = 0;
-        }
-
-        //
+        if ($role_id == 3) $is_active = 0;
 
         $gangguan = $this->getAllGangguan();
 
         $kode_akhir = end($gangguan)['kode_gangguan'];
 
-        for ($i=0; $i < count($gangguan); $i++) { 
-    
-            if ($kode == $gangguan[$i]['kode_gangguan'])
-            { 
+        for ($i = 0; $i < count($gangguan); $i++) {
+
+            if ($kode == $gangguan[$i]['kode_gangguan']) {
                 $kode = $kode_akhir + 1;
                 break;
             }
         }
-
-        //
-
 
         $data = [
             "kode_gangguan" => $kode,
@@ -63,6 +44,22 @@ class Internet_model extends CI_model
         ];
 
         $this->db->insert('data_gangguan_internet', $data);
+
+        if ($role_id == 3) {
+
+            $gangguanByKode = $this->db->get_where('data_gangguan_internet', ['kode_gangguan' => $kode])->row_array();
+
+            $data = [
+                "request" => "Tambah Data Gangguan",
+                "id_layanan" => $gangguanByKode['id'],
+                "layanan" => "Internet Fiber",
+                "kode" => $kode,
+                "name" => $data_user['name'],
+                "image" => $data_user['image'],
+            ];
+
+            $this->db->insert('user_requests', $data);
+        }
     }
 
     public function hapusDataGangguan($id, $kode)
