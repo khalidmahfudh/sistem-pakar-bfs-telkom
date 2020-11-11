@@ -135,6 +135,9 @@ class Managetelepon extends CI_Controller
         $data['gejala'] = $this->Telepon_model->getAllGejala();
         $data['requests'] = $this->Request_model->getAllData();
 
+        $id_user = $data['user']['id'];
+
+
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
         if ($this->form_validation->run() == false) {
@@ -144,7 +147,7 @@ class Managetelepon extends CI_Controller
             $this->load->view('managetelepon/tambahgejala', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->Telepon_model->tambahDataGejala();
+            $this->Telepon_model->tambahDataGejala($id_user);
             $this->session->set_flashdata('flash', 'Ditambahkan');
             redirect('managetelepon/gejala');
         }
@@ -157,6 +160,8 @@ class Managetelepon extends CI_Controller
         $data['gejala'] = $this->Telepon_model->getGejalaById($id);
         $data['requests'] = $this->Request_model->getAllData();
 
+        $id_user = $data['user']['id'];
+
         $this->form_validation->set_rules('namagejala', 'Nama Gejala', 'required');
 
         if ($this->form_validation->run() == false) {
@@ -166,7 +171,7 @@ class Managetelepon extends CI_Controller
             $this->load->view('managetelepon/ubahgejala', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->Telepon_model->ubahDataGejala();
+            $this->Telepon_model->ubahDataGejala($id_user);
             $this->session->set_flashdata('flash', 'Diubah');
 
             redirect('managetelepon/gejala');

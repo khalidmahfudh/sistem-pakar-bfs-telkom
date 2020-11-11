@@ -144,14 +144,20 @@ class Telepon_model extends CI_model
         return $this->db->get('data_gangguan_telepon')->num_rows();
     }
 
-    // GEjala
+    // Gejala
     public function getAllGejala()
     {
         return $this->db->get('data_gejala_telepon')->result_array();
     }
 
-    public function tambahDataGejala()
+    public function tambahDataGejala($id_user)
     {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
         $kode = $this->input->post('kodegejala');
         $kode = explode("G", $kode);
         $kode = end($kode);
@@ -173,13 +179,30 @@ class Telepon_model extends CI_model
             $cfpakar_value = 1;
         }
 
-        $data = [
-            "kode_gejala" => $kode,
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $cfpakar_value,
-        ];
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gejala",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => 0,
+                "kode_gejala" => $kode,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $cfpakar_value,
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
 
-        $this->db->insert('data_gejala_telepon', $data);
+            $data = [
+                "kode_gejala" => $kode,
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $cfpakar_value,
+            ];
+
+            $this->db->insert('data_gejala_telepon', $data);
+        }
     }
 
     public function getGejalaById($id)
@@ -192,20 +215,70 @@ class Telepon_model extends CI_model
         return $this->db->get_where('data_gejala_telepon', ['kode_gejala' => $kode])->row_array();
     }
 
-    public function ubahDataGejala()
+    public function ubahDataGejala($id_user)
     {
-        $data = [
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $this->input->post('cfpakar'),
-        ];
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gejala_telepon', $data);
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gejala",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $this->input->post('cfpakar', true),
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $this->input->post('cfpakar'),
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gejala_telepon', $data);
+        }
     }
 
     public function hapusDataGejala($id)
     {
-        $this->db->delete('data_gejala_telepon', ['id' => $id]);
+        $gejala = $this->getGejalaById($id);
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gejala",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => $id,
+                "kode_gejala" => $gejala['kode_gejala'],
+                "kode_gangguan" => 0,
+                "nama_layanan" => $gejala['nama_gejala'],
+                "solusi" => "",
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gejala_telepon', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_telepon', ['kode_gejala' => $gejala['kode_gejala']]);
+        }
     }
 
     public function cariDataGejala()
