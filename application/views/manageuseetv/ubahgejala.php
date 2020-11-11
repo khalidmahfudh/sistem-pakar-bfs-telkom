@@ -5,8 +5,8 @@ $cf_count = 6;
 ?>
 <div class="container">
     <!-- Page Heading -->
-    <nav class="title">        
-    <h1 class="h3 text-dark text-center">Ubah Data Gejala Televisi Interaktif (UseeTV)</h1>
+    <nav class="title">
+        <h1 class="h3 text-dark text-center">Ubah Data Gejala Televisi Interaktif (UseeTV)</h1>
     </nav>
     <div class="row mt-3">
         <div class="col-md-6">
@@ -20,7 +20,7 @@ $cf_count = 6;
 
                         <div class="form-group">
                             <label for="nama">kode Gejala Gangguan</label>
-                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="P<?= $gejala['kode_gejala']; ?>" disabled>
+                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="G<?= $gejala['kode_gejala']; ?>" disabled>
                         </div>
 
                         <div class="form-group">

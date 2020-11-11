@@ -5,28 +5,76 @@ class Telepon_model extends CI_model
     // Gangguan
     public function getAllGangguan()
     {
-        return $this->db->get('data_gangguan_telepon')->result_array();
+        return $this->db->order_by('kode_gangguan', 'ASC')->get('data_gangguan_telepon')->result_array();
     }
 
-    public function tambahDataGangguan()
+    public function tambahDataGangguan($id_user)
     {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+
         $kode = $this->input->post('kodegangguan');
         $kode = explode("P", $kode);
         $kode = end($kode);
 
-        $data = [
-            "kode_gangguan" => $kode,
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true),
-        ];
 
-        $this->db->insert('data_gangguan_telepon', $data);
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gangguan",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => 0,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $data = [
+                "kode_gangguan" => $kode,
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true),
+            ];
+
+            $this->db->insert('data_gangguan_telepon', $data);
+        }
     }
 
     public function hapusDataGangguan($id, $kode)
     {
-        $this->db->delete('data_gangguan_telepon', ['id' => $id]);
-        $this->db->delete('gejala_gangguan_telepon', ['kode_gangguan' => $kode]);
+        $gangguan = $this->getGangguanById($id);
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gangguan",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => $id,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $gangguan['nama_gangguan'],
+                "solusi" => $gangguan['solusi_gangguan'],
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gangguan_telepon', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_telepon', ['kode_gangguan' => $kode]);
+        }
     }
 
     public function getGangguanById($id)
@@ -34,15 +82,39 @@ class Telepon_model extends CI_model
         return $this->db->get_where('data_gangguan_telepon', ['id' => $id])->row_array();
     }
 
-    public function ubahDataGangguan()
+    public function ubahDataGangguan($id_user)
     {
-        $data = [
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true)
-        ];
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gangguan_telepon', $data);
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gangguan",
+                "layanan" => "Telepon Rumah",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true)
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gangguan_telepon', $data);
+        }
     }
 
     public function cariDataGangguan()

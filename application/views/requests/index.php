@@ -11,7 +11,6 @@
                     Semua Requests dari Teknisi
                 </div>
                 <?php
-                $i = 0;
                 foreach ($requests as $request) :
                 ?>
                     <div class="card-body">
@@ -27,15 +26,14 @@
                                 </div>
 
                                 <div>
-                                    <a href="<?= base_url('requests/accept/' . $gangguan_internet[$i]['id'] . '/' . $request['id']); ?>" class="btn btn-primary ml-5" style="width: 100px">Terima</a>
-                                    <a href="<?= base_url('requests/reject/' . $gangguan_internet[$i]['id'] . '/' . $request['id']); ?>" class="btn btn-danger ml-4" style="width: 100px">Tolak</a>
+                                    <a href="<?= base_url('requests/accept/' . $request['id']); ?>" class="btn btn-primary ml-5" style="width: 100px">Terima</a>
+                                    <a href="<?= base_url('requests/reject/' . $request['id']); ?>" class="btn btn-danger ml-4" style="width: 100px">Tolak</a>
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 <?php
-                    $i++;
                 endforeach;
                 ?>
             </div>

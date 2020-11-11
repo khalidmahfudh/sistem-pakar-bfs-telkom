@@ -5,8 +5,8 @@ $cf_count = 6;
 ?>
 <div class="container">
     <nav class="title">
-        
-    <h1 class="h3 text-dark text-center">Ubah Data Gejala Internet Fiber</h1>
+
+        <h1 class="h3 text-dark text-center">Ubah Data Gejala Internet Fiber</h1>
     </nav>
     <div class="row mt-3">
         <div class="col-md-6">
@@ -20,7 +20,7 @@ $cf_count = 6;
 
                         <div class="form-group">
                             <label for="nama">kode Gejala Gangguan</label>
-                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="P<?= $gejala['kode_gejala']; ?>" disabled>
+                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="G<?= $gejala['kode_gejala']; ?>" disabled>
                         </div>
 
                         <div class="form-group">
@@ -44,7 +44,7 @@ $cf_count = 6;
                         </div>
 
                         <div class="footer">
-                                <a href="<?= base_url('manageinternet/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
+                            <a href="<?= base_url('manageinternet/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
                             <button type="submit" name="ubah" class="btn btn-dark float-right">Ubah Data Gejala</button>
                         </div>
 

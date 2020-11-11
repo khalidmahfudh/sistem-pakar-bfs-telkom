@@ -10,6 +10,8 @@ class Requests extends CI_Controller
 
         $this->load->model('Request_model');
         $this->load->model('Internet_model');
+        $this->load->model('Telepon_model');
+        $this->load->model('Useetv_model');
     }
     public function index()
     {
@@ -25,18 +27,18 @@ class Requests extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function accept($id_gangguan, $id_request)
+    public function accept($id)
     {
 
-        $this->Request_model->accept($id_gangguan, $id_request);
+        $this->Request_model->accept($id);
         $this->session->set_flashdata('flash', 'Dipermohonkan');
 
         redirect('requests');
     }
 
-    public function reject($id_gangguan, $id_request)
+    public function reject($id)
     {
-        $this->Request_model->reject($id_gangguan, $id_request);
+        $this->Request_model->reject($id);
         $this->session->set_flashdata('flash', 'Ditolak');
 
         redirect('requests');

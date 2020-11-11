@@ -1,6 +1,6 @@
 <div class="container">
-    <nav class="title">        
-    <h1 class="h3 text-dark text-center">Ubah Data Gangguan Telepon Rumah</h1>
+    <nav class="title">
+        <h1 class="h3 text-dark text-center">Ubah Data Gangguan Telepon Rumah</h1>
     </nav>
     <div class="row mt-3">
         <div class="col-md-6">
@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <label for="nama">Kode Gangguan</label>
-                            <input type="text" class="form-control" id="kodegangguan" name="kodegangguan" autocomplete="off" value="G<?= $gangguan['kode_gangguan']; ?>" disabled>
+                            <input type="text" class="form-control" id="kodegangguan" name="kodegangguan" autocomplete="off" value="P<?= $gangguan['kode_gangguan']; ?>" disabled>
                         </div>
 
                         <div class="form-group">

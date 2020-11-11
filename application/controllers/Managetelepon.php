@@ -55,6 +55,8 @@ class Managetelepon extends CI_Controller
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['requests'] = $this->Request_model->getAllData();
 
+        $id_user = $data['user']['id'];
+
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
 
@@ -65,7 +67,7 @@ class Managetelepon extends CI_Controller
             $this->load->view('managetelepon/tambahgangguan', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->Telepon_model->tambahDataGangguan();
+            $this->Telepon_model->tambahDataGangguan($id_user);
             $this->session->set_flashdata('flash', 'Ditambahkan');
             redirect('managetelepon/gangguan');
         }
@@ -78,6 +80,8 @@ class Managetelepon extends CI_Controller
         $data['gangguan'] = $this->Telepon_model->getGangguanById($id);
         $data['requests'] = $this->Request_model->getAllData();
 
+        $id_user = $data['user']['id'];
+
         $this->form_validation->set_rules('namagangguan', 'Nama Gangguan', 'required');
         $this->form_validation->set_rules('solusi', 'Solusi', 'required|min_length[12]');
 
@@ -88,7 +92,7 @@ class Managetelepon extends CI_Controller
             $this->load->view('managetelepon/ubahgangguan', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->Telepon_model->ubahDataGangguan();
+            $this->Telepon_model->ubahDataGangguan($id_user);
             $this->session->set_flashdata('flash', 'Diubah');
 
             redirect('managetelepon/gangguan');
@@ -97,10 +101,9 @@ class Managetelepon extends CI_Controller
 
     public function hapusgangguan($id, $kode)
     {
+
         $this->Telepon_model->hapusDataGangguan($id, $kode);
         $this->session->set_flashdata('flash', 'Dihapus');
-
-
 
         redirect('managetelepon/gangguan');
     }
@@ -184,7 +187,7 @@ class Managetelepon extends CI_Controller
         $data['gangguan'] = $this->Telepon_model->getAllGangguan();
         $data['gejala'] = $this->Telepon_model->getAllGejala();
         $data['requests'] = $this->Request_model->getAllData();
-        
+
         $this->load->view('templates/pakarheader', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);

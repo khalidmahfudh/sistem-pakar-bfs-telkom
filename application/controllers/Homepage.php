@@ -17,7 +17,7 @@ class Homepage extends CI_Controller
 	}
 	public function index()
 	{
-		$data['title'] = "Home Page";
+		$data['title'] = "Homepage | Indihome - Sistem Pakar";
 		$data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
 		$data['requests'] = $this->Request_model->getAllData();
 

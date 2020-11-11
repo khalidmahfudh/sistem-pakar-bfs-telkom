@@ -19,7 +19,7 @@ $cf_count = 6;
 
                         <div class="form-group">
                             <label for="nama">kode Gejala Gangguan</label>
-                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="P<?= $gejala['kode_gejala']; ?>" disabled>
+                            <input type="text" class="form-control" id="kodegejala" name="kodegejala" autocomplete="off" value="G<?= $gejala['kode_gejala']; ?>" disabled>
                         </div>
 
                         <div class="form-group">
