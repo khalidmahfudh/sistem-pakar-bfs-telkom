@@ -87,6 +87,23 @@ class Request_model extends CI_model
                 $this->db->delete('gejala_gangguan_telepon', ['kode_gejala' => $request['kode_gejala']]);
 
                 $this->db->delete('teknisi_requests', ['id' => $id]);
+            } elseif ($request['request'] == "Edit Data Rules") {
+
+                $gejala = str_split($request['kode_gejala'], 3);
+
+                $this->db->delete('gejala_gangguan_telepon', ['kode_gangguan' => $request['kode_gangguan']]);
+
+                foreach ($gejala as $g) :
+                    $data = [
+                        "kode_gejala" => $g,
+                        "kode_gangguan" => $request['kode_gangguan']
+                    ];
+
+                    $this->db->insert('gejala_gangguan_telepon', $data);
+                endforeach;
+
+                $this->db->delete('teknisi_requests', ['id' => $id]);
+                $this->session->set_flashdata('flash', 'Diperbarui');
             }
         }
     }
