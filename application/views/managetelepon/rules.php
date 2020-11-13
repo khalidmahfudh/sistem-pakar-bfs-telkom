@@ -177,6 +177,7 @@
                                 "cf_pakar" => 0,
                                 "image" => $user['image'],
                                 "name" => $user['name'],
+                                "date" => time()
                             ];
                             $this->db->insert('teknisi_requests', $data);
 

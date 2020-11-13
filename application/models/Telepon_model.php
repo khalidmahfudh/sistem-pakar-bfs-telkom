@@ -34,6 +34,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => 0,
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {
@@ -69,6 +70,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => 0,
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {
@@ -103,6 +105,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => 0,
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {
@@ -191,6 +194,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => $cfpakar_value,
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {
@@ -237,6 +241,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => $this->input->post('cfpakar', true),
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {
@@ -273,6 +278,7 @@ class Telepon_model extends CI_model
                 "cf_pakar" => 0,
                 "image" => $image,
                 "name" => $name,
+                "date" => time()
             ];
             $this->db->insert('teknisi_requests', $data);
         } else {

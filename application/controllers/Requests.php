@@ -29,18 +29,19 @@ class Requests extends CI_Controller
 
     public function accept($id)
     {
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->Request_model->accept($id);
-        $this->session->set_flashdata('flash', 'Dipermohonkan');
+        $this->session->set_flashdata('flash', $data['user']['name'] . ' Di Terima');
 
         redirect('requests');
     }
 
     public function reject($id)
     {
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $this->Request_model->reject($id);
-        $this->session->set_flashdata('flash', 'Ditolak');
-
+        $this->session->set_flashdata('flash', $data['user']['name'] . ' Di Tolak');
         redirect('requests');
     }
 };

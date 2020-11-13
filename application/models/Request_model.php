@@ -43,7 +43,6 @@ class Request_model extends CI_model
                     "solusi_gangguan" => $request['solusi'],
                 ];
                 $this->db->insert('data_gangguan_telepon', $data);
-
                 $this->db->delete('teknisi_requests', ['id' => $id]);
             } elseif ($request['request'] == "Ubah Data Gangguan") {
                 $data = [
@@ -103,7 +102,6 @@ class Request_model extends CI_model
                 endforeach;
 
                 $this->db->delete('teknisi_requests', ['id' => $id]);
-                $this->session->set_flashdata('flash', 'Diperbarui');
             }
         }
     }

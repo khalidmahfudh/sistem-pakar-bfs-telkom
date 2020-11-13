@@ -43,7 +43,7 @@
                 </div>
                 <div class="font-weight-bold">
                   <div class="text-truncate">Hi Pakar! Request <?= $request['request'] . " " . $request['layanan']; ?></div>
-                  <div class="small text-gray-500"><?= $request['name'] ?> &nbsp<h6 class="d-inline"><a href=""><span class="badge badge-primary">TERIMA</span></a></h6>&nbsp<h6 class="d-inline"><a href=""><span class="badge badge-danger">TOLAK</span></a></h6>
+                  <div class="small text-gray-500"><?= $request['name'] ?> &nbsp<h6 class="d-inline"><a href="<?= base_url('requests/accept/' . $request['id']); ?>"><span class="badge badge-primary">TERIMA</span></a></h6>&nbsp<h6 class="d-inline"><a href="<?= base_url('requests/reject/' . $request['id']); ?>"><span class="badge badge-danger">TOLAK</span></a></h6>
                   </div>
                 </div>
               </div>
