@@ -1,27 +1,8 @@
-<?php
-
-$kode_awal = "201";
-$kode_akhir = end($gangguan)['kode_gangguan'];
-
-$kode_now =  $kode_akhir + 1;
-
-for ($i = 0; $i < count($gangguan); $i++) {
-
-    if ($kode_awal != $gangguan[$i]['kode_gangguan']) {
-        $kode_now = $kode_awal;
-        break;
-    }
-    $kode_awal++;
-}
-
-?>
-
 <div class="container">
-    <!-- Page Heading -->
     <nav class="title">
-
         <h1 class="h3 text-dark text-center">Tambah Data Gangguan Internet Fiber</h1>
     </nav>
+    <!-- Page Heading -->
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="card">
@@ -29,6 +10,7 @@ for ($i = 0; $i < count($gangguan); $i++) {
                 <div class="card-body">
                     <form action="" method="post">
                         <?php
+                        $kode = 201;
 
                         $data = array(
                             'class'        => 'form-control',
@@ -40,16 +22,19 @@ for ($i = 0; $i < count($gangguan); $i++) {
                         ?>
 
                         <div class="form-group">
-                            <label for="namagangguan">Nama Gangguan</label>
+                            <label for="nama">Nama Gangguan</label>
                             <input type="text" class="form-control" id="namagangguan" name="namagangguan" autocomplete="off" value="<?= set_value('namagangguan'); ?>">
                             <small class="form-text text-danger"><i><?= form_error('namagangguan'); ?></i></small>
                         </div>
 
                         <div class="form-group">
-                            <label for="kodegangguan">Kode Gangguan</label>
-
+                            <label for="exampleFormControlSelect1">Kode Gangguan</label>
                             <select class="form-control" id="kodegangguan" name="kodegangguan">
-                                <option>P<?= $kode_now; ?></option>
+                                <?php foreach ($gangguan as $g) : ?>
+                                    <option disabled>P<?= $g['kode_gangguan']; ?></option>
+                                <?php endforeach; ?>
+
+                                <option checked>P<?= $g['kode_gangguan'] + 1 ?></option>
                             </select>
                         </div>
 

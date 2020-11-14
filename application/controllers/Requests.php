@@ -18,7 +18,6 @@ class Requests extends CI_Controller
         $data['title'] = "All Requests";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['requests'] = $this->Request_model->getAllData();
-        $data['gangguan_internet'] = $this->Internet_model->getAllGangguanWithIsActiveZero();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

@@ -88,7 +88,15 @@
                                     <?php elseif ($request['request'] == "Ubah Data Gangguan") : ?>
 
                                         <?php
-                                        $theGangguan = $this->db->get_where('data_gangguan_telepon', ['id' => $request['id_layanan']])->row_array();
+
+                                        if ($request['layanan'] == "Internet Fiber") {
+                                            $theGangguan = $this->db->get_where('data_gangguan_internet', ['id' => $request['id_layanan']])->row_array();
+                                        } elseif ($request['layanan'] == "Telepon Rumah") {
+                                            $theGangguan = $this->db->get_where('data_gangguan_telepon', ['id' => $request['id_layanan']])->row_array();
+                                        } else {
+                                            $theGangguan = $this->db->get_where('data_gangguan_useetv', ['id' => $request['id_layanan']])->row_array();
+                                        }
+
                                         ?>
 
                                         <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sebelumnya</h5>
@@ -169,7 +177,14 @@
                                     <?php elseif ($request['request'] == "Ubah Data Gejala") : ?>
 
                                         <?php
-                                        $theGejala = $this->db->get_where('data_gejala_telepon', ['id' => $request['id_layanan']])->row_array();
+
+                                        if ($request['layanan'] == "Internet Fiber") {
+                                            $theGejala = $this->db->get_where('data_gejala_internet', ['id' => $request['id_layanan']])->row_array();
+                                        } elseif ($request['layanan'] == "Telepon Rumah") {
+                                            $theGejala = $this->db->get_where('data_gejala_telepon', ['id' => $request['id_layanan']])->row_array();
+                                        } else {
+                                            $theGejala = $this->db->get_where('data_gejala_useetv', ['id' => $request['id_layanan']])->row_array();
+                                        }
                                         ?>
 
                                         <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sebelumnya</h5>
@@ -222,15 +237,37 @@
                                             </div>
                                         </div>
                                     <?php else : ?>
+
                                         <?php
 
-                                        $this->db->select('*');
-                                        $this->db->from('data_gejala_telepon');
-                                        $this->db->join('gejala_gangguan_telepon', 'data_gejala_telepon.kode_gejala = gejala_gangguan_telepon.kode_gejala');
-                                        $this->db->where(array('gejala_gangguan_telepon.kode_gangguan' => $request['kode_gangguan']));
-                                        $getGejalaByGangguanBefore = $this->db->get()->result_array();
+                                        // Rules
 
-                                        $allGejala = $this->db->get('data_gejala_telepon')->result_array();
+                                        if ($request['layanan'] == "Internet Fiber") {
+                                            $this->db->select('*');
+                                            $this->db->from('data_gejala_internet');
+                                            $this->db->join('gejala_gangguan_internet', 'data_gejala_internet.kode_gejala = gejala_gangguan_internet.kode_gejala');
+                                            $this->db->where(array('gejala_gangguan_internet.kode_gangguan' => $request['kode_gangguan']));
+                                            $getGejalaByGangguanBefore = $this->db->get()->result_array();
+
+                                            $allGejala = $this->db->get('data_gejala_internet')->result_array();
+                                        } elseif ($request['layanan'] == "Telepon Rumah") {
+                                            $this->db->select('*');
+                                            $this->db->from('data_gejala_telepon');
+                                            $this->db->join('gejala_gangguan_telepon', 'data_gejala_telepon.kode_gejala = gejala_gangguan_telepon.kode_gejala');
+                                            $this->db->where(array('gejala_gangguan_telepon.kode_gangguan' => $request['kode_gangguan']));
+                                            $getGejalaByGangguanBefore = $this->db->get()->result_array();
+
+                                            $allGejala = $this->db->get('data_gejala_telepon')->result_array();
+                                        } else {
+                                            $this->db->select('*');
+                                            $this->db->from('data_gejala_useetv');
+                                            $this->db->join('gejala_gangguan_useetv', 'data_gejala_useetv.kode_gejala = gejala_gangguan_useetv.kode_gejala');
+                                            $this->db->where(array('gejala_gangguan_useetv.kode_gangguan' => $request['kode_gangguan']));
+                                            $getGejalaByGangguanBefore = $this->db->get()->result_array();
+
+                                            $allGejala = $this->db->get('data_gejala_useetv')->result_array();
+                                        }
+
 
                                         $kodeGejala = str_split($request['kode_gejala'], 3);
 

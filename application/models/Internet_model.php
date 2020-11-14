@@ -6,70 +6,77 @@ class Internet_model extends CI_model
     public function getAllGangguan()
     {
         return $this->db->order_by('kode_gangguan', 'ASC')->get('data_gangguan_internet')->result_array();
-        // return $this->db->get('data_gangguan_internet')->result_array();
-    }
-    public function getAllGangguanWithIsActiveOne()
-    {
-        return $this->db->order_by('kode_gangguan', 'ASC')->get_where('data_gangguan_internet', ['is_active' => 1])->result_array();
-    }
-    public function getAllGangguanWithIsActiveZero()
-    {
-        return $this->db->order_by('kode_gangguan', 'ASC')->get_where('data_gangguan_internet', ['is_active' => 0])->result_array();
     }
 
-    public function tambahDataGangguan($data_user)
+    public function tambahDataGangguan($id_user)
     {
-        $is_active = 1;
-        $role_id = $data_user['role_id'];
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
 
         $kode = $this->input->post('kodegangguan');
         $kode = explode("P", $kode);
         $kode = end($kode);
 
-        if ($role_id == 3) $is_active = 0;
 
-        $gangguan = $this->getAllGangguan();
-
-        $kode_akhir = end($gangguan)['kode_gangguan'];
-
-        for ($i = 0; $i < count($gangguan); $i++) {
-
-            if ($kode == $gangguan[$i]['kode_gangguan']) {
-                $kode = $kode_akhir + 1;
-                break;
-            }
-        }
-
-        $data = [
-            "kode_gangguan" => $kode,
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true),
-            "is_active" => $is_active,
-        ];
-
-        $this->db->insert('data_gangguan_internet', $data);
-
-        if ($role_id == 3) {
-
-            $gangguanByKode = $this->db->get_where('data_gangguan_internet', ['kode_gangguan' => $kode])->row_array();
-
+        if ($role == 3) {
             $data = [
                 "request" => "Tambah Data Gangguan",
-                "id_layanan" => $gangguanByKode['id'],
                 "layanan" => "Internet Fiber",
-                "kode" => $kode,
-                "name" => $data_user['name'],
-                "image" => $data_user['image'],
+                "id_layanan" => 0,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $data = [
+                "kode_gangguan" => $kode,
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true),
             ];
 
-            $this->db->insert('user_requests', $data);
+            $this->db->insert('data_gangguan_internet', $data);
         }
     }
 
     public function hapusDataGangguan($id, $kode)
     {
-        $this->db->delete('data_gangguan_internet', ['id' => $id]);
-        $this->db->delete('gejala_gangguan_internet', ['kode_gangguan' => $kode]);
+        $gangguan = $this->getGangguanById($id);
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gangguan",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => $id,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $gangguan['nama_gangguan'],
+                "solusi" => $gangguan['solusi_gangguan'],
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gangguan_internet', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_internet', ['kode_gangguan' => $kode]);
+        }
     }
 
     public function getGangguanById($id)
@@ -77,15 +84,40 @@ class Internet_model extends CI_model
         return $this->db->get_where('data_gangguan_internet', ['id' => $id])->row_array();
     }
 
-    public function ubahDataGangguan()
+    public function ubahDataGangguan($id_user)
     {
-        $data = [
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true)
-        ];
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gangguan_internet', $data);
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gangguan",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true)
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gangguan_internet', $data);
+        }
     }
 
     public function cariDataGangguan()
@@ -115,42 +147,51 @@ class Internet_model extends CI_model
         return $this->db->get('data_gangguan_internet')->num_rows();
     }
 
-    // GEjala
+    // Gejala
     public function getAllGejala()
     {
         return $this->db->get('data_gejala_internet')->result_array();
     }
 
-    public function tambahDataGejala()
+    public function tambahDataGejala($id_user)
     {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
         $kode = $this->input->post('kodegejala');
         $kode = explode("G", $kode);
         $kode = end($kode);
 
         $cfpakar = $this->input->post('cfpakar');
-        $cfpakar_value = 0;
 
-        if ($cfpakar == 0) {
-            $cfpakar_value = 0;
-        } elseif ($cfpakar == 1) {
-            $cfpakar_value = 0.2;
-        } elseif ($cfpakar == 2) {
-            $cfpakar_value = 0.4;
-        } elseif ($cfpakar == 3) {
-            $cfpakar_value = 0.6;
-        } elseif ($cfpakar == 4) {
-            $cfpakar_value = 0.8;
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gejala",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => 0,
+                "kode_gejala" => $kode,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $cfpakar,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
         } else {
-            $cfpakar_value = 1;
+
+            $data = [
+                "kode_gejala" => $kode,
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $cfpakar,
+            ];
+
+            $this->db->insert('data_gejala_internet', $data);
         }
-
-        $data = [
-            "kode_gejala" => $kode,
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $cfpakar_value,
-        ];
-
-        $this->db->insert('data_gejala_internet', $data);
     }
 
     public function getGejalaById($id)
@@ -163,28 +204,80 @@ class Internet_model extends CI_model
         return $this->db->get_where('data_gejala_internet', ['kode_gejala' => $kode])->row_array();
     }
 
-    public function ubahDataGejala()
+    public function ubahDataGejala($id_user)
     {
 
-        $data = [
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $this->input->post('cfpakar'),
-        ];
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gejala_internet', $data);
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gejala",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $this->input->post('cfpakar', true),
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $this->input->post('cfpakar'),
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gejala_internet', $data);
+        }
     }
 
     public function hapusDataGejala($id)
     {
-        $this->db->delete('data_gejala_internet', ['id' => $id]);
+        $gejala = $this->getGejalaById($id);
+
+
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gejala",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => $id,
+                "kode_gejala" => $gejala['kode_gejala'],
+                "kode_gangguan" => 0,
+                "nama_layanan" => $gejala['nama_gejala'],
+                "solusi" => "",
+                "cf_pakar" => $gejala['cf_pakar'],
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gejala_internet', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_internet', ['kode_gejala' => $gejala['kode_gejala']]);
+        }
     }
 
     public function cariDataGejala()
     {
         $gejala = $this->getAllGejala();
         $keyword = $this->input->post('keyword', true);
-
 
         if (strlen($keyword) == 4) {
             $keyword = strtoupper($keyword);
@@ -199,7 +292,6 @@ class Internet_model extends CI_model
             }
         }
 
-
         $this->db->like('nama_gejala', $keyword);
         $this->db->or_like('cf_pakar', $keyword);
         return $this->db->get('data_gejala_internet')->result_array();
@@ -209,6 +301,7 @@ class Internet_model extends CI_model
     {
         return $this->db->get_where('gejala_gangguan_internet', ['kode_gangguan' => $kode])->result_array();
     }
+
 
     public function getAllGejalaCompGangguan()
     {

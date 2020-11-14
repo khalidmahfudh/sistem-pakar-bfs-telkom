@@ -64,7 +64,6 @@ class Konsultasiinternet extends CI_Controller
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $data['requests'] = $this->Request_model->getAllData();
         $data['gejalaByGangguan'] = $this->Internet_model->gejalaByGangguan2();
-        var_dump($data['gejalaByGangguan']);die;
 
         if ($number == 0) {
             $number = 1;
@@ -92,6 +91,7 @@ class Konsultasiinternet extends CI_Controller
 
         $servicesInterruptionAndSymptoms = $data['gejalaByGangguan'];
         $theRoot = $data['gejalaByGangguan'][0][3];
+
 
         $i = 0;
         $j = 0;
@@ -129,6 +129,7 @@ class Konsultasiinternet extends CI_Controller
                 array_push($this->allSymptomsPerPart, $questions[$i]);
             }
         }
+
         for ($i = 0; $i < count($this->allSymptomsPerPart); $i++) {
             $this->roots[$i] = $this->allSymptomsPerPart[$i];
         }
@@ -162,11 +163,13 @@ class Konsultasiinternet extends CI_Controller
         ];
         $this->session->set_userdata($data1);
 
+
         // id,nama gejala dan kode gejala untuk dikirim ke view
 
         $symptom = $this->Internet_model->getGejalaByKode($this->open[0]);
 
         $data['question'] = $symptom;
+
 
 
         $this->load->view('templates/header', $data);
@@ -303,7 +306,7 @@ class Konsultasiinternet extends CI_Controller
     public function percentage()
     {
         if (!$this->session->userdata('percentage_') || !$this->session->userdata('symptomCode_')) {
-            redirect('konsultasiinternet/questions/1');
+            redirect('konsultasiInternet/questions/1');
         }
         $data['title'] = "Gangguan Internet Fiber";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
@@ -367,7 +370,7 @@ class Konsultasiinternet extends CI_Controller
         $this->session->unset_userdata('open_');
         $this->session->unset_userdata('root_');
         $this->session->unset_userdata('temporary_roots_');
-        redirect('konsultasiinternet/questions/1');
+        redirect('konsultasiInternet/questions/1');
     }
 
     public function unknownresult()

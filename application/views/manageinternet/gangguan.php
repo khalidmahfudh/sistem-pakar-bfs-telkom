@@ -40,7 +40,7 @@
     <div class="overflow-auto row">
 
 
-        <div class="col-lg">
+        <div class="col-lg-9">
             <table class="table table-light text-center">
                 <thead>
                     <tr class="bg-dark text-light">
