@@ -73,7 +73,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $request['nama_layanan']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
                                             </div>
                                         </div>
 
@@ -81,7 +81,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $request['solusi']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $request['solusi']; ?>" disabled>
                                             </div>
                                         </div>
 
@@ -91,7 +91,7 @@
                                         $theGangguan = $this->db->get_where('data_gangguan_telepon', ['id' => $request['id_layanan']])->row_array();
                                         ?>
 
-                                        <h5 class="h5 text-dark text-center">Data Sebelumnya</h5>
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sebelumnya</h5>
                                         <div class="form-group row mt-1">
                                             <label for="kode" class="col-sm-3 col-form-label label-gangguan">Kode</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
@@ -104,7 +104,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGangguan['nama_gangguan']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $theGangguan['nama_gangguan']; ?>" disabled>
                                             </div>
                                         </div>
 
@@ -112,7 +112,88 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGangguan['solusi_gangguan']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $theGangguan['solusi_gangguan']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sesudah</h5>
+
+                                        <div class="form-group row mt-1">
+                                            <label for="kode" class="col-sm-3 col-form-label label-gangguan">Kode</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGangguan['kode_gangguan']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $request['solusi']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                    <?php elseif ($request['request'] == "Tambah Data Gejala" || $request['request'] == "Hapus Data Gejala") : ?>
+                                        <div class="form-group row mt-1">
+                                            <label for="kode" class="col-sm-3 col-form-label label-gangguan">Kode</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $request['kode_gejala']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gejala</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">CF Pakar</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="cf-pakar" value="<?= $request['cf_pakar']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                    <?php elseif ($request['request'] == "Ubah Data Gejala") : ?>
+
+                                        <?php
+                                        $theGejala = $this->db->get_where('data_gejala_telepon', ['id' => $request['id_layanan']])->row_array();
+                                        ?>
+
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sebelumnya</h5>
+                                        <div class="form-group row mt-1">
+                                            <label for="kode" class="col-sm-3 col-form-label label-gangguan">Kode</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGejala['kode_gejala']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gejala</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $theGejala['nama_gejala']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">CF Pakar</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="cf-pakar" value="<?= $theGejala['cf_pakar']; ?>" disabled>
                                             </div>
                                         </div>
                                         <h5 class="h5 text-dark text-center">Data Sesudah</h5>
@@ -121,28 +202,89 @@
                                             <label for="kode" class="col-sm-3 col-form-label label-gangguan">Kode</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGangguan['kode_gangguan']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $theGejala['kode_gejala']; ?>" disabled>
                                             </div>
                                         </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gejala</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">CF Pakar</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="cf-pakar" value="<?= $request['cf_pakar']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    <?php else : ?>
+                                        <?php
+
+                                        $this->db->select('*');
+                                        $this->db->from('data_gejala_telepon');
+                                        $this->db->join('gejala_gangguan_telepon', 'data_gejala_telepon.kode_gejala = gejala_gangguan_telepon.kode_gejala');
+                                        $this->db->where(array('gejala_gangguan_telepon.kode_gangguan' => $request['kode_gangguan']));
+                                        $getGejalaByGangguanBefore = $this->db->get()->result_array();
+
+                                        $allGejala = $this->db->get('data_gejala_telepon')->result_array();
+
+                                        $kodeGejala = str_split($request['kode_gejala'], 3);
+
+
+
+                                        ?>
+
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sebelumnya</h5>
 
                                         <div class="form-group row">
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $request['nama_layanan']; ?>" disabled>
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gejala</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="kode" value="<?= $request['solusi']; ?>" disabled>
+                                                <ul class="list-group">
+                                                    <?php foreach ($getGejalaByGangguanBefore as $ggbgb) : ?>
+                                                        <li class="list-group-item"><?= $ggbgb['nama_gejala']; ?></li>
+                                                    <?php endforeach; ?>
+                                                </ul>
                                             </div>
                                         </div>
 
-                                    <?php else : ?>
-                                        <?= $request['request']; ?>
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sesudah</h5>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="nama-layanan" value="<?= $request['nama_layanan']; ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gejala</label>
+                                            <p class="mt-2 font-weight-bold equal">:</p>
+                                            <div class="col-sm-8">
+                                                <ul class="list-group">
+                                                    <?php foreach ($allGejala as $gejala) { ?>
+                                                        <?php for ($i = 0; $i < count($kodeGejala); $i++) { ?>
+                                                            <?php if ($gejala['kode_gejala'] == $kodeGejala[$i]) : ?>
+                                                                <li class="list-group-item"><?= $gejala['nama_gejala']; ?></li>
+                                                            <?php endif; ?>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
                                 <div class="modal-footer bg-light text-white">

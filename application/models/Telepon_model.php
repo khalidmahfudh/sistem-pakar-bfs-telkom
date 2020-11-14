@@ -166,21 +166,6 @@ class Telepon_model extends CI_model
         $kode = end($kode);
 
         $cfpakar = $this->input->post('cfpakar');
-        $cfpakar_value = 0;
-
-        if ($cfpakar == 0) {
-            $cfpakar_value = 0;
-        } elseif ($cfpakar == 1) {
-            $cfpakar_value = 0.2;
-        } elseif ($cfpakar == 2) {
-            $cfpakar_value = 0.4;
-        } elseif ($cfpakar == 3) {
-            $cfpakar_value = 0.6;
-        } elseif ($cfpakar == 4) {
-            $cfpakar_value = 0.8;
-        } else {
-            $cfpakar_value = 1;
-        }
 
         if ($role == 3) {
             $data = [
@@ -191,7 +176,7 @@ class Telepon_model extends CI_model
                 "kode_gangguan" => 0,
                 "nama_layanan" => $this->input->post('namagejala', true),
                 "solusi" => "",
-                "cf_pakar" => $cfpakar_value,
+                "cf_pakar" => $cfpakar,
                 "image" => $image,
                 "name" => $name,
                 "date" => time()
@@ -202,7 +187,7 @@ class Telepon_model extends CI_model
             $data = [
                 "kode_gejala" => $kode,
                 "nama_gejala" => $this->input->post('namagejala', true),
-                "cf_pakar" => $cfpakar_value,
+                "cf_pakar" => $cfpakar,
             ];
 
             $this->db->insert('data_gejala_telepon', $data);
@@ -260,6 +245,8 @@ class Telepon_model extends CI_model
     {
         $gejala = $this->getGejalaById($id);
 
+
+
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
 
         $role = $user['role_id'];
@@ -275,7 +262,7 @@ class Telepon_model extends CI_model
                 "kode_gangguan" => 0,
                 "nama_layanan" => $gejala['nama_gejala'],
                 "solusi" => "",
-                "cf_pakar" => 0,
+                "cf_pakar" => $gejala['cf_pakar'],
                 "image" => $image,
                 "name" => $name,
                 "date" => time()

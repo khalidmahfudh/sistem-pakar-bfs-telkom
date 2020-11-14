@@ -68,7 +68,11 @@ class Managetelepon extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $this->Telepon_model->tambahDataGangguan($id_user);
-            $this->session->set_flashdata('flash', 'Ditambahkan');
+            if ($data['user']['role_id'] == 3) {
+                $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+            } else {
+                $this->session->set_flashdata('flash', 'Ditambahkan');
+            }
             redirect('managetelepon/gangguan');
         }
     }
@@ -93,7 +97,11 @@ class Managetelepon extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $this->Telepon_model->ubahDataGangguan($id_user);
-            $this->session->set_flashdata('flash', 'Diubah');
+            if ($data['user']['role_id'] == 3) {
+                $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+            } else {
+                $this->session->set_flashdata('flash', 'Diubah');
+            }
 
             redirect('managetelepon/gangguan');
         }
@@ -101,9 +109,13 @@ class Managetelepon extends CI_Controller
 
     public function hapusgangguan($id, $kode)
     {
-
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $this->Telepon_model->hapusDataGangguan($id, $kode);
-        $this->session->set_flashdata('flash', 'Dihapus');
+        if ($data['user']['role_id'] == 3) {
+            $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+        } else {
+            $this->session->set_flashdata('flash', 'Dihapus');
+        }
 
         redirect('managetelepon/gangguan');
     }
@@ -148,7 +160,11 @@ class Managetelepon extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $this->Telepon_model->tambahDataGejala($id_user);
-            $this->session->set_flashdata('flash', 'Ditambahkan');
+            if ($data['user']['role_id'] == 3) {
+                $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+            } else {
+                $this->session->set_flashdata('flash', 'Ditambahkan');
+            }
             redirect('managetelepon/gejala');
         }
     }
@@ -172,7 +188,11 @@ class Managetelepon extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $this->Telepon_model->ubahDataGejala($id_user);
-            $this->session->set_flashdata('flash', 'Diubah');
+            if ($data['user']['role_id'] == 3) {
+                $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+            } else {
+                $this->session->set_flashdata('flash', 'Diubah');
+            }
 
             redirect('managetelepon/gejala');
         }
@@ -180,8 +200,13 @@ class Managetelepon extends CI_Controller
 
     public function hapusgejala($id)
     {
+        $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
         $this->Telepon_model->hapusDataGejala($id);
-        $this->session->set_flashdata('flash', 'Dihapus');
+        if ($data['user']['role_id'] == 3) {
+            $this->session->set_flashdata('flash', 'Diajukan ke Pakar');
+        } else {
+            $this->session->set_flashdata('flash', 'Dihapus');
+        }
         redirect('managetelepon/gejala');
     }
 

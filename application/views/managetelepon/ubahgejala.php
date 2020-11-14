@@ -42,7 +42,7 @@ $cf_count = 6;
                             <small class="form-text text-danger"><i><?= form_error('cfpakar'); ?></i></small>
                         </div>
 
-                         <div class="footer">
+                        <div class="footer">
                             <a href="<?= base_url('managetelepon/gejala'); ?>" class="btn btn-outline-dark">Kembali</a>
                             <button type="submit" name="ubah" class="btn btn-dark float-right">Ubah Data Gejala</button>
                         </div>

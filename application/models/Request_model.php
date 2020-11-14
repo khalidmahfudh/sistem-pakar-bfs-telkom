@@ -86,6 +86,8 @@ class Request_model extends CI_model
                 $this->db->delete('gejala_gangguan_telepon', ['kode_gejala' => $request['kode_gejala']]);
 
                 $this->db->delete('teknisi_requests', ['id' => $id]);
+
+                //Rules
             } elseif ($request['request'] == "Edit Data Rules") {
 
                 $gejala = str_split($request['kode_gejala'], 3);
