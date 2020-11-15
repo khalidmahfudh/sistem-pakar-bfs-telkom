@@ -65,8 +65,10 @@
                             <?php
                                 if ($au['role_id'] == 1) {
                                     echo 'Pakar';
+                                } elseif($au['role_id'] == 3){
+                                    echo 'Teknisi';
                                 } else {
-                                    echo 'User';
+                                    echo 'Pelanggan';
                                 }
                                 ?>
                         </td>

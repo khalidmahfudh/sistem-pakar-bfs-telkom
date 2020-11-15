@@ -30,9 +30,15 @@
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="radioUser" value="3" <?php if ($single_user['role_id'] == "3") echo "checked"; ?>>
+                                <label class="form-check-label" for="radioUser">
+                                    Teknisi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="radioUser" value="2" <?php if ($single_user['role_id'] == "2") echo "checked"; ?>>
                                 <label class="form-check-label" for="radioUser">
-                                    User
+                                    Pelanggan
                                 </label>
                             </div>
                         </div>
@@ -54,9 +60,7 @@
                         </div>
 
                         <div class="footer">
-                            <button type="button" class="close mr-2 float-left" title="detail">
-                                <a href="<?= base_url('manageusers'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>
-                            </button>
+                            <a href="<?= base_url('manageusers'); ?>" class="btn btn-outline-dark">Kembali</a>
                             <button type="submit" name="ubah" class="btn btn-outline-dark float-right">Ubah Data User</button>
                         </div>
 

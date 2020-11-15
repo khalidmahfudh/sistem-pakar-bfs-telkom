@@ -1,9 +1,9 @@
 <div class="container">
     <!-- Page Heading -->
     <nav class="title">
-        
 
-    <h1 class="h3 text-dark text-center">Tambah Data User</h1>
+
+        <h1 class="h3 text-dark text-center">Tambah Data User</h1>
     </nav>
     <div class="row mt-3">
         <div class="col-md-6">
@@ -39,17 +39,21 @@
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="radioUser" value="3" checked>
+                                <label class="form-check-label" for="radioUser">
+                                    Teknisi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="radioUser" value="2" checked>
                                 <label class="form-check-label" for="radioUser">
-                                    User
+                                    Pelanggan
                                 </label>
                             </div>
                         </div>
 
                         <div class="footer">
-                            <button type="button" class="close mr-2 float-left" title="detail">
-                                <a href="<?= base_url('manageusers'); ?>" style="text-decoration: none; color: black; font-size: 40px;">&#16;</a>
-                            </button>
+                            <a href="<?= base_url('manageusers'); ?>" class="btn btn-outline-dark">Kembali</a>
                             <button type="submit" name="tambah" class="btn btn-outline-dark float-right">Tambah Data User</button>
                         </div>
                     </form>
