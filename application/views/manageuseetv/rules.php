@@ -3,14 +3,15 @@
 
     <!-- Page Heading -->
     <nav class="title">
-    <h1 class="h3 text-dark text-center">RULES</h1>
+
+        <h1 class="h3 text-dark text-center">RULES</h1>
     </nav>
 
     <?php if ($this->session->flashdata('flash')) : ?>
         <div class="row mt-3">
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    RULES Gangguan Useetv <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
+                    RULES Gangguan UseeTV <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
                     <a href="<?= base_url('konsultasiuseetv/detail'); ?>/<?= $this->session->userdata('id_gangguan'); ?>">List Gejala</a>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -53,6 +54,7 @@
     </div>
 
     <?php
+
     $action = $this->input->post('submit');
 
     $ct = $this->input->post('gangguan');
@@ -87,7 +89,7 @@
                     <?php if ($ct) : ?>
                         Gejala Gangguan [ <?= $ct; ?> ]
                     <?php else : ?>
-                        Gejala Gangguan Useetv
+                        Gejala Gangguan UseeTV
                     <?php endif; ?>
                 </div>
                 <div class="card-body">
@@ -96,14 +98,14 @@
                         <form action="" method="post">
 
                             <?php if (!$getGejalaByGangguan) :
-                                    $kodeGejala[1] = 9999;
-                                else :
-                                    $i = 1;
-                                    foreach ($getGejalaByGangguan as $ggbg) :
-                                        $kodeGejala[$i++] = ($ggbg['kode_gejala']);
-                                    endforeach;
-                                endif;
-                                ?>
+                                $kodeGejala[1] = 9999;
+                            else :
+                                $i = 1;
+                                foreach ($getGejalaByGangguan as $ggbg) :
+                                    $kodeGejala[$i++] = ($ggbg['kode_gejala']);
+                                endforeach;
+                            endif;
+                            ?>
 
                             <!-- disini digunakan hidden input agar bisa mengirim kode_gangguan dari form1 -->
                             <input type="hidden" name="kode_gangguan" value="<?= $kode; ?>">
@@ -111,7 +113,7 @@
 
                             <?php foreach ($gejala as $g) :
 
-                                    if (array_search($g['kode_gejala'], $kodeGejala)) : ?>
+                                if (array_search($g['kode_gejala'], $kodeGejala)) : ?>
 
                                     <div class="form-check mb-2">
                                         <label class="form-check-label">
@@ -141,32 +143,76 @@
 
 
                     <?php if (isset($_POST['submit2'])) :
-                        $this->db->delete('gejala_gangguan_useetv', ['kode_gangguan' => $_POST['kode_gangguan']]);
 
+                        if ($user['role_id'] == 3) {
 
-                        foreach ($gejala as $g) : ?>
+                            $listGejala = [];
+                            foreach ($gejala as $g) :
 
-                            <?php if (isset($_POST['G' . $g['kode_gejala']])) : ?>
+                                if (isset($_POST['G' . $g['kode_gejala']])) :
 
-                            <?php $codeg = $_POST['G' . $g['kode_gejala']];
-                                        $codeg = explode("G", $codeg);
-                                        $codeg = end($codeg);
+                                    $codeg = $_POST['G' . $g['kode_gejala']];
+                                    $codeg = explode("G", $codeg);
+                                    $codeg = end($codeg);
 
-                                        $data = [
-                                            "kode_gejala" => $codeg,
-                                            "kode_gangguan" => $_POST['kode_gangguan']
-                                        ];
+                                    array_push($listGejala, $codeg);
 
-                                        $this->db->insert('gejala_gangguan_useetv', $data);
+                                endif;
 
-                                    endif; ?>
+                            endforeach;
 
-                        <?php endforeach; ?>
+                            $listGejala = implode("", $listGejala);
 
-                        <?php $this->session->set_flashdata('flash', 'Diperbarui');
+                            $nama_gangguan = $this->db->get_where('data_gangguan_useetv', ['id' => $_SESSION['id_gangguan']])->row_array();
+                            $nama_gangguan = $nama_gangguan['nama_gangguan'];
+
+                            $data = [
+                                "request" => "Edit Data Rules",
+                                "layanan" => "UseeTV",
+                                "id_layanan" => 0,
+                                "kode_gejala" => $listGejala,
+                                "kode_gangguan" => $_POST['kode_gangguan'],
+                                "nama_layanan" => $nama_gangguan,
+                                "solusi" => "",
+                                "cf_pakar" => 0,
+                                "image" => $user['image'],
+                                "name" => $user['name'],
+                                "date" => time()
+                            ];
+                            $this->db->insert('teknisi_requests', $data);
+
+                            $this->session->set_flashdata('flash', 'Diajukan Ke Pakar');
                             redirect('manageuseetv/rules');
-                            ?>
-                    <?php endif; ?>
+                        } else {
+
+
+                            $this->db->delete('gejala_gangguan_useetv', ['kode_gangguan' => $_POST['kode_gangguan']]);
+
+
+                            foreach ($gejala as $g) :
+
+                                if (isset($_POST['G' . $g['kode_gejala']])) :
+
+                                    $codeg = $_POST['G' . $g['kode_gejala']];
+                                    $codeg = explode("G", $codeg);
+                                    $codeg = end($codeg);
+
+                                    $data = [
+                                        "kode_gejala" => $codeg,
+                                        "kode_gangguan" => $_POST['kode_gangguan']
+                                    ];
+
+                                    $this->db->insert('gejala_gangguan_useetv', $data);
+
+                                endif;
+
+                            endforeach;
+
+                            $this->session->set_flashdata('flash', 'Diperbarui');
+                            redirect('manageuseetv/rules');
+                        }
+
+                    endif; ?>
 
                 </div>
             </div>
@@ -178,4 +224,3 @@
 
 </div>
 <!-- End of Main Content -->
-<!-- public function tambahDataGangguan()

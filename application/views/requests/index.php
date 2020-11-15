@@ -297,7 +297,7 @@
                                             </div>
                                         </div>
 
-                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sesudah</h5>
+                                        <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sesudahnya</h5>
 
                                         <div class="form-group row">
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Gangguan</label>

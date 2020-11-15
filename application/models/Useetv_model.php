@@ -5,28 +5,78 @@ class Useetv_model extends CI_model
     // Gangguan
     public function getAllGangguan()
     {
-        return $this->db->get('data_gangguan_useetv')->result_array();
+        return $this->db->order_by('kode_gangguan', 'ASC')->get('data_gangguan_useetv')->result_array();
     }
 
-    public function tambahDataGangguan()
+    public function tambahDataGangguan($id_user)
     {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+
         $kode = $this->input->post('kodegangguan');
         $kode = explode("P", $kode);
         $kode = end($kode);
 
-        $data = [
-            "kode_gangguan" => $kode,
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true),
-        ];
 
-        $this->db->insert('data_gangguan_useetv', $data);
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gangguan",
+                "layanan" => "UseeTV",
+                "id_layanan" => 0,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $data = [
+                "kode_gangguan" => $kode,
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true),
+            ];
+
+            $this->db->insert('data_gangguan_useetv', $data);
+        }
     }
 
     public function hapusDataGangguan($id, $kode)
     {
-        $this->db->delete('data_gangguan_useetv', ['id' => $id]);
-        $this->db->delete('gejala_gangguan_useetv', ['kode_gangguan' => $kode]);
+        $gangguan = $this->getGangguanById($id);
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gangguan",
+                "layanan" => "UseeTV",
+                "id_layanan" => $id,
+                "kode_gejala" => 0,
+                "kode_gangguan" => $kode,
+                "nama_layanan" => $gangguan['nama_gangguan'],
+                "solusi" => $gangguan['solusi_gangguan'],
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gangguan_useetv', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_useetv', ['kode_gangguan' => $kode]);
+        }
     }
 
     public function getGangguanById($id)
@@ -34,15 +84,40 @@ class Useetv_model extends CI_model
         return $this->db->get_where('data_gangguan_useetv', ['id' => $id])->row_array();
     }
 
-    public function ubahDataGangguan()
+    public function ubahDataGangguan($id_user)
     {
-        $data = [
-            "nama_gangguan" => $this->input->post('namagangguan', true),
-            "solusi_gangguan" => $this->input->post('solusi', true)
-        ];
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gangguan_useetv', $data);
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gangguan",
+                "layanan" => "UseeTV",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagangguan', true),
+                "solusi" => $this->input->post('solusi', true),
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gangguan" => $this->input->post('namagangguan', true),
+                "solusi_gangguan" => $this->input->post('solusi', true)
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gangguan_useetv', $data);
+        }
     }
 
     public function cariDataGangguan()
@@ -72,42 +147,51 @@ class Useetv_model extends CI_model
         return $this->db->get('data_gangguan_useetv')->num_rows();
     }
 
-    // GEjala
+    // Gejala
     public function getAllGejala()
     {
         return $this->db->get('data_gejala_useetv')->result_array();
     }
 
-    public function tambahDataGejala()
+    public function tambahDataGejala($id_user)
     {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
         $kode = $this->input->post('kodegejala');
         $kode = explode("G", $kode);
         $kode = end($kode);
 
         $cfpakar = $this->input->post('cfpakar');
-        $cfpakar_value = 0;
 
-        if ($cfpakar == 0) {
-            $cfpakar_value = 0;
-        } elseif ($cfpakar == 1) {
-            $cfpakar_value = 0.2;
-        } elseif ($cfpakar == 2) {
-            $cfpakar_value = 0.4;
-        } elseif ($cfpakar == 3) {
-            $cfpakar_value = 0.6;
-        } elseif ($cfpakar == 4) {
-            $cfpakar_value = 0.8;
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gejala",
+                "layanan" => "UseeTV",
+                "id_layanan" => 0,
+                "kode_gejala" => $kode,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $cfpakar,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
         } else {
-            $cfpakar_value = 1;
+
+            $data = [
+                "kode_gejala" => $kode,
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $cfpakar,
+            ];
+
+            $this->db->insert('data_gejala_useetv', $data);
         }
-
-        $data = [
-            "kode_gejala" => $kode,
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $cfpakar_value,
-        ];
-
-        $this->db->insert('data_gejala_useetv', $data);
     }
 
     public function getGejalaById($id)
@@ -120,20 +204,74 @@ class Useetv_model extends CI_model
         return $this->db->get_where('data_gejala_useetv', ['kode_gejala' => $kode])->row_array();
     }
 
-    public function ubahDataGejala()
+    public function ubahDataGejala($id_user)
     {
-        $data = [
-            "nama_gejala" => $this->input->post('namagejala', true),
-            "cf_pakar" => $this->input->post('cfpakar'),
-        ];
 
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('data_gejala_useetv', $data);
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $id_layanan = $this->input->post('id');
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Ubah Data Gejala",
+                "layanan" => "UseeTV",
+                "id_layanan" => $id_layanan,
+                "kode_gejala" => 0,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => $this->input->post('cfpakar', true),
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+
+            $data = [
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => $this->input->post('cfpakar'),
+            ];
+
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('data_gejala_useetv', $data);
+        }
     }
 
     public function hapusDataGejala($id)
     {
-        $this->db->delete('data_gejala_useetv', ['id' => $id]);
+        $gejala = $this->getGejalaById($id);
+
+
+
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Hapus Data Gejala",
+                "layanan" => "UseeTV",
+                "id_layanan" => $id,
+                "kode_gejala" => $gejala['kode_gejala'],
+                "kode_gangguan" => 0,
+                "nama_layanan" => $gejala['nama_gejala'],
+                "solusi" => "",
+                "cf_pakar" => $gejala['cf_pakar'],
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('teknisi_requests', $data);
+        } else {
+            $this->db->delete('data_gejala_useetv', ['id' => $id]);
+            $this->db->delete('gejala_gangguan_useetv', ['kode_gejala' => $gejala['kode_gejala']]);
+        }
     }
 
     public function cariDataGejala()

@@ -1,8 +1,8 @@
 <div class="container">
-    <!-- Page Heading -->
-    <nav class="title">        
-    <h1 class="h3 text-dark text-center">Tambah Data Gangguan Televisi Interaktif (UseeTV)</h1>
+    <nav class="title">
+        <h1 class="h3 text-dark text-center">Tambah Data Gangguan UseeTV</h1>
     </nav>
+    <!-- Page Heading -->
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="card">
@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <form action="" method="post">
                         <?php
-                        $kode = 101;
+                        $kode = 301;
 
                         $data = array(
                             'class'        => 'form-control',
