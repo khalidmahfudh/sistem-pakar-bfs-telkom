@@ -8,6 +8,12 @@ class Requests extends CI_Controller
         parent::__construct();
         is_logged_in();
 
+        $role_id = $this->session->userdata('role_id');
+
+        if ($role_id != 1) {
+            redirect('auth/blocked');
+        }
+
         $this->load->model('Request_model');
         $this->load->model('Internet_model');
         $this->load->model('Telepon_model');

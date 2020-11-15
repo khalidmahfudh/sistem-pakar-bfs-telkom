@@ -46,8 +46,8 @@
             $subMenu = $this->db->query($querySubMenu)->result_array();
 
             if ($menuId == 1 && $role_id == 3) {
-                // array_pop($subMenu);
-                // array_pop($subMenu);
+                array_pop($subMenu);
+                array_pop($subMenu);
             }
 
             ?>

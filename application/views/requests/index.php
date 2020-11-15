@@ -81,7 +81,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $request['solusi']; ?>" disabled>
+                                                <textarea name="solusi" id="solusi" cols="30" rows="10" disabled><?= $request['solusi']; ?></textarea>
                                             </div>
                                         </div>
 
@@ -120,7 +120,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $theGangguan['solusi_gangguan']; ?>" disabled>
+                                                <textarea name="solusi" id="solusi" cols="30" rows="10" disabled><?= $theGangguan['solusi_gangguan']; ?></textarea>
                                             </div>
                                         </div>
                                         <h5 class="h5 text-dark text-center" style="text-decoration: underline;">Data Sesudah</h5>
@@ -145,7 +145,7 @@
                                             <label for="labelSolusi" class="col-sm-3 col-form-label label-gangguan">Solusi</label>
                                             <p class="mt-2 font-weight-bold equal">:</p>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control-plaintext text-gray-900 input-gangguan bg-light px-2 py-2 rounded" id="solusi" value="<?= $request['solusi']; ?>" disabled>
+                                                <textarea name="solusi" id="solusi" cols="30" rows="10" disabled><?= $request['solusi']; ?></textarea>
                                             </div>
                                         </div>
 
