@@ -22,7 +22,6 @@ class Konsultasitelepon extends CI_Controller
         $this->load->model('Request_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
-
     }
     public function index()
     {
@@ -48,7 +47,7 @@ class Konsultasitelepon extends CI_Controller
     {
         $data['title'] = "Gangguan Telepon Rumah";
         $data['user'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row_array();
-        $data['requests'] = $this->Request_model->getAllData();   
+        $data['requests'] = $this->Request_model->getAllData();
         $data['gangguanById'] = $this->Telepon_model->getGangguanById($id);
 
         $this->load->view('templates/header', $data);

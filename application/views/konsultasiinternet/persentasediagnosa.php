@@ -19,7 +19,7 @@ $checked = $symptomCode;
         <div class="col-md-8">
             <ul class="list-group">
                 <li class="list-group-item text-danger border-left-danger">
-                    KETERANGAN : Geserlah slider dibawah berdasarkan keyakinan terjadinya gejala.
+                    KETERANGAN : Jawablah Pertanyaan dibawah berdasarkan keyakinan terjadinya gejala.
                 </li>
             </ul>
         </div>
@@ -40,25 +40,42 @@ $checked = $symptomCode;
                         <div class="form-wrap">
                             <h4 class="card-header text-gray-900 text-center mb-3">Menghitung Persentase Kemungkinan [ <?= $question[0]; ?> ]</h4>
                             <?php $j = 1; ?>
-                            <?php foreach ($chunkSliceQuestion as $csq) : ?>
+                            <?php foreach ($chunkSliceQuestion as $csq) :
+                            ?>
                                 <div class="row ml-2">
                                     <div class="col-sm">
                                         <div class="form-check form-check">
                                             <label class="percenContainer form-check-label" id="label">
                                                 <h4 class="mt-1 percenQuestions"><?= $j; ?>. apakah <?= $csq[0]; ?>?</h4>
-                                                <div class="slideContainer d-flex align-items-center">
-                                                    <?php if ($checked == $csq[1]) : ?>
-                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange disabledInput" value="5" style="Background: linear-gradient(90deg, rgb(239, 71, 64)100%, rgb(214, 214, 214)100%);">
-                                                    <?php else : ?>
-                                                        <input type="range" min="0" max="2" id="myRange<?= $i . $j ?>" name="myRange<?= $i . $j++ ?>" class="slider myRange" value="0">
-                                                    <?php endif; ?>
-                                                    <span class="value"></span>
+                                                <div class="d-flex align-items-center radio-wrapper">
+                                                    <label class="container">Ya
+                                                        <?php if ($checked == $csq[1]) : ?>
+                                                            <input type="radio" checked="checked" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="2">
+                                                        <?php else : ?>
+                                                            <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="2">
+                                                        <?php endif; ?>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="container">Tidak Tau
+                                                        <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="1">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="container">Tidak
+                                                        <?php if ($checked != $csq[1]) : ?>
+                                                            <input checked="checked" type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="0">
+                                                        <?php else : ?>
+                                                            <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="0">
+                                                        <?php endif; ?>
+                                                        <span class="checkmark"></span>
+                                                    </label>
                                                 </div>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
+                            <?php $j++;
+                            endforeach;
+                            ?>
                         </div>
                         <?php $i++; ?>
                     <?php endforeach; ?>

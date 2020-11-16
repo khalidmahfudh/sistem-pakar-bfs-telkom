@@ -296,60 +296,82 @@ div.code code {
 	width: 550px;
 }
 
-/* == Slider == */
-.slideContainer {
-	width: 400px;
+/* ==  Radiobuttons  == */
+
+.radio-wrapper {
+	width: 500px;
 }
 
-span.value {
-	width: 40%;
-	padding-left: 10px;
+.radio-wrapper .container:nth-child(1) {
+	width: 100px;
 }
 
-.slider,
-.slider2 {
-	-webkit-appearance: none;
-	width: 60%;
-	height: 20px;
-	background: linear-gradient(90deg, rgb(214, 214, 214)50%, rgb(214, 214, 214)50%);
-	outline: none;
-	opacity: 0.7;
-	-webkit-transition: 0.2s;
-	transition: opacity 0.2s;
-	border-radius: 12px;
-	box-shadow: 0px 1px 10px 1px black;
+.radio-wrapper .container:nth-child(2) {
+	width: 280px;
 }
 
-.slider:hover,
-.slider2:hover {
-	opacity: 1;
+/* The container */
+.radio-wrapper .container {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
-.slider.disabledInput:hover {
-	opacity: 0.7;
-}
-
-/* Google Chrome */
-.slider::-webkit-slider-thumb,
-.slider2::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 40px;
-	height: 40px;
-	border: solid 0.5px #2D142C;
-	background: white;
-	border-radius: 50%;
+/* Hide the browser's default radio button */
+.radio-wrapper .container input {
+	position: absolute;
+	opacity: 0;
 	cursor: pointer;
 }
 
-/* Mozila Firefox */
-.slider::-moz-range-thumb,
-.slider2::-moz-range-thumb {
-	width: 40px;
-	height: 40px;
-	background: white;
+/* Create a custom radio button */
+.radio-wrapper .container .checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
 	border-radius: 50%;
-	cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-wrapper .container:hover input~.checkmark {
+	background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio-wrapper .container input:checked~.checkmark {
+	background-color: #F35844;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio-wrapper .container .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-wrapper .container input:checked~.checkmark:after {
+	display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-wrapper .container .checkmark:after {
+	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
 }
 
 /* =  =  =  = */
