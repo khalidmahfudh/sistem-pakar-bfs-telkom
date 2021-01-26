@@ -22,7 +22,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    Semua Requests dari Teknisi
+                    Semua Requests dari User
                 </div>
                 <?php
                 foreach ($requests as $request) :

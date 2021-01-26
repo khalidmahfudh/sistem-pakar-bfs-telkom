@@ -421,6 +421,7 @@ class Konsultasitelepon extends CI_Controller
             }
         }
 
+
         // Mengkonversi value range menjadi angka certain factor 
         $getData2 = [];
         foreach ($getData as $theData) {
@@ -434,6 +435,8 @@ class Konsultasitelepon extends CI_Controller
             array_push($getData2, $theData);
         }
 
+        var_dump($getData2);
+        die;
 
         // Mengkalikan CF User dengan CF Pakar
         $k = 0;

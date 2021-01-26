@@ -36,7 +36,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
             $data = [
                 "kode_gangguan" => $kode,
@@ -72,7 +72,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
             $this->db->delete('data_gangguan_internet', ['id' => $id]);
             $this->db->delete('gejala_gangguan_internet', ['kode_gangguan' => $kode]);
@@ -107,7 +107,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
 
             $data = [
@@ -181,7 +181,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
 
             $data = [
@@ -228,7 +228,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
 
             $data = [
@@ -267,7 +267,7 @@ class Internet_model extends CI_model
                 "name" => $name,
                 "date" => time()
             ];
-            $this->db->insert('teknisi_requests', $data);
+            $this->db->insert('user_requests', $data);
         } else {
             $this->db->delete('data_gejala_internet', ['id' => $id]);
             $this->db->delete('gejala_gangguan_internet', ['kode_gejala' => $gejala['kode_gejala']]);
@@ -381,6 +381,14 @@ class Internet_model extends CI_model
     {
         $problems =  $this->gejalaByGangguan();
 
+        $n = 0;
+        foreach ($problems as $problem) {
+            if ($problem == null) {
+                unset($problems[$n]);
+            }
+            $n++;
+        }
+
         $i = 0;
         foreach ($problems as $pro) {
 
@@ -392,12 +400,51 @@ class Internet_model extends CI_model
             foreach ($pro as $p) {
                 $theGangguan[$i][$j] = $p['nama_gejala'];
                 $theGangguan[$i][++$j] = $p['kode_gejala'];
+                $theGangguan[$i][++$j] = $p['cf_pakar'];
+
                 $j++;
             }
 
             $i++;
         }
 
+
         return $theGangguan;
+    }
+    public function requestGejala($id_user)
+    {
+        $user = $this->db->get_where('users', ['id' => $id_user])->row_array();
+
+        $role = $user['role_id'];
+        $image = $user['image'];
+        $name = $user['name'];
+
+        $kode = $this->input->post('kodegejala');
+
+        if ($role == 3) {
+            $data = [
+                "request" => "Tambah Data Gejala",
+                "layanan" => "Internet Fiber",
+                "id_layanan" => 0,
+                "kode_gejala" => $kode,
+                "kode_gangguan" => 0,
+                "nama_layanan" => $this->input->post('namagejala', true),
+                "solusi" => "",
+                "cf_pakar" => 0,
+                "image" => $image,
+                "name" => $name,
+                "date" => time()
+            ];
+            $this->db->insert('user_requests', $data);
+        } else {
+
+            $data = [
+                "kode_gejala" => $kode,
+                "nama_gejala" => $this->input->post('namagejala', true),
+                "cf_pakar" => 0,
+            ];
+
+            $this->db->insert('data_gejala_internet', $data);
+        }
     }
 }

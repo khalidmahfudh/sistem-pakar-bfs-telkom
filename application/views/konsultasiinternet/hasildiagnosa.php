@@ -80,7 +80,7 @@ foreach ($results as $result) {
 								<?php endforeach; ?>
 							</div>
 					</div>
-					<a href="<?= base_url('konsultasiinternet/questions/1');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
+					<a href="<?= base_url('konsultasiinternet/diagnosa');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
 				</div>
 			</div>
 		</div>
