@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 22, 2020 at 06:09 PM
+-- Generation Time: Jan 26, 2021 at 05:47 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.8
 
@@ -50,7 +50,9 @@ INSERT INTO `data_gangguan_internet` (`id`, `kode_gangguan`, `nama_gangguan`, `s
 (8, 208, 'Kabel dropcore Rusak', 'Cek ukuran/redaman kabel dengan menggunakan OPM meter (ukuran baik tidak >25dBm), lalu lakukan rekoneksi sambungan/pergantian dropcore. Settingcreate pada modem hilang, lakukan create ulang, masuk pada putty, masukkan script create setting konfigurasi dan masukkan data nomor telepon, nomor internet, dan SN (Serial Number) modem'),
 (9, 209, 'Fast Connector Rusak', 'Dilakukan penggantian fast connector baru, kemudian lakukan penyambungan ulang'),
 (10, 210, 'Adaptor Rusak/ Modem Rusak', 'dilakukan pengecekan dengan adaptor dan modem test, apabila tidak berfungsi dapat diganti dengan adaptor atau modem ONT baru'),
-(11, 211, 'Maintenance Server', 'Kemungkinan terdapat perbaikan server pada alamat web yang dituju.');
+(11, 211, 'Maintenance Server', 'Kemungkinan terdapat perbaikan server pada alamat web yang dituju.'),
+(29, 212, 'GAMAS - Gangguan Masal', 'Menunggu Sedang Dalam Proses Perbaikan'),
+(38, 213, 'hehehehe', 'heheeeeeeeeeeeeeeeeeeeeeeeeeeee');
 
 -- --------------------------------------------------------
 
@@ -121,16 +123,16 @@ CREATE TABLE `data_gejala_internet` (
 INSERT INTO `data_gejala_internet` (`id`, `kode_gejala`, `nama_gejala`, `cf_pakar`) VALUES
 (1, 201, 'Internet Tidak Bisa Connect', 0.6),
 (2, 202, 'PC Tidak Mendapatkan IP', 0.6),
-(3, 203, 'Tidak Ada Tunggakan Pembayaran', 0.6),
-(4, 204, 'Koneksi Lambat Pc Pelanggan di Share', 0.6),
+(3, 203, 'Ada Tunggakan Pembayaran', 1),
+(4, 204, 'Koneksi Lambat Pc Pelanggan di Share', 0.2),
 (5, 205, 'Koneksi Lambat', 0.6),
-(6, 206, 'Bandwidth Kecil', 0.6),
+(6, 206, 'Bandwidth Kecil', 0.8),
 (7, 207, 'Paket Internet Kuota Habis', 0.6),
-(8, 208, 'Koneksi Putus Putus', 0.6),
-(9, 209, 'Modem Normal', 0.6),
-(10, 210, 'Kabel Patchcord Rusak', 0.6),
+(8, 208, 'Koneksi Putus Putus', 0.8),
+(9, 209, 'Modem Tidak Normal', 0.6),
+(10, 210, 'Kabel Patchcord Rusak', 0.2),
 (11, 211, 'Tidak Bisa Browsing', 0.6),
-(12, 212, 'IP PC Sesuai Dengan IP Modem', 0.6),
+(12, 212, 'IP PC Sesuai Dengan IP Modem', 0.8),
 (13, 213, 'Bandwidth Tidak Sesuai Paket', 0.6),
 (14, 214, 'Konfigurasi Setting Hilang', 0.6),
 (15, 215, 'Lampu Indikator PON Mati', 0.6),
@@ -139,12 +141,14 @@ INSERT INTO `data_gejala_internet` (`id`, `kode_gejala`, `nama_gejala`, `cf_paka
 (18, 218, 'Lampu Indicator Power Mati', 0.6),
 (19, 219, 'Modem ONT Tidak Menyala', 0.6),
 (20, 220, 'Tidak Bisa Membuka Web Tertentu', 0.6),
-(21, 221, 'Proxy Sudah Sesuai', 0.6),
-(22, 222, 'DNS Sudah Sesuai', 0.6),
+(21, 221, 'Proxy Tidak Sesuai', 0.6),
+(22, 222, 'DNS Tidak Sesuai', 0.6),
 (24, 223, 'Kabel Distribusi Putus', 0.6),
 (25, 224, 'Kabel Feder Putus', 0.6),
 (26, 225, 'Fanderisme', 0.6),
-(29, 226, 'ODP Rusak', 0.6);
+(29, 226, 'ODP Rusak', 0.6),
+(44, 227, 'internet lamot kali', 0),
+(51, 228, 'dsdsdsd', 0);
 
 -- --------------------------------------------------------
 
@@ -251,8 +255,14 @@ INSERT INTO `gejala_gangguan_internet` (`id`, `kode_gejala`, `kode_gangguan`) VA
 (142, 210, 205),
 (145, 201, 201),
 (146, 202, 201),
-(154, 211, 211),
-(155, 220, 211);
+(156, 211, 211),
+(157, 220, 211),
+(158, 221, 211),
+(159, 222, 211),
+(160, 223, 212),
+(161, 224, 212),
+(162, 225, 212),
+(163, 226, 212);
 
 -- --------------------------------------------------------
 
@@ -322,34 +332,6 @@ INSERT INTO `gejala_gangguan_useetv` (`id`, `kode_gejala`, `kode_gangguan`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `teknisi_requests`
---
-
-CREATE TABLE `teknisi_requests` (
-  `id` int(11) NOT NULL,
-  `request` varchar(128) NOT NULL,
-  `layanan` varchar(128) NOT NULL,
-  `id_layanan` int(11) NOT NULL,
-  `kode_gejala` varchar(255) NOT NULL,
-  `kode_gangguan` int(11) NOT NULL,
-  `nama_layanan` varchar(128) NOT NULL,
-  `solusi` text NOT NULL,
-  `cf_pakar` float NOT NULL,
-  `image` varchar(128) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `date` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `teknisi_requests`
---
-
-INSERT INTO `teknisi_requests` (`id`, `request`, `layanan`, `id_layanan`, `kode_gejala`, `kode_gangguan`, `nama_layanan`, `solusi`, `cf_pakar`, `image`, `name`, `date`) VALUES
-(111, 'Tambah Data Gangguan', 'Telepon Rumah', 0, '0', 103, 'asdfasdf', 'asdfasdfasdf', 0, 'images1.png', 'Khalid', 1605561331);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -370,11 +352,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 (1, 'Khalid', 'khalid@gmail.com', 'images1.png', '$2y$10$XHFbOLoLhZLkH36JdtQmnubw2kjJ9lantNrrDiXhQjulHKoz5GrhK', 3, 1, 1569744112),
-(27, 'Seorang Pakar', 'pakar@gmail.com', 'wp2601087.jpg', '$2y$10$LcpQvrcJbtTfHgPcz1KDx.Ex1VgPJn0NuzbW4Bx1zpaZvFHgAWkrG', 1, 1, 1579817521),
+(27, 'Seorang Pakar', 'pakar@gmail.com', 'osNfc9l-airbus-a380-wallpaper_(1).jpg', '$2y$10$LcpQvrcJbtTfHgPcz1KDx.Ex1VgPJn0NuzbW4Bx1zpaZvFHgAWkrG', 1, 1, 1579817521),
 (28, 'Seorang User', 'user@gmail.com', 'default.jpg', '$2y$10$Y3A0dZDzS3cFuDY5ebp2huEAXOoBHEiF5CDo7bzlbrjwj17LQ9zTO', 2, 1, 1579817597),
 (29, 'Andi', 'andi@gmail.com', 'default.jpg', '$2y$10$c/5Ls.OLa3PDWKfdxGAM6OPWfQnHLFisGZ6dNJ6Z7cd68CytT5X5.', 2, 1, 1579817628),
-(31, 'Khalid Mahfudh', 'khalidmahfudh94@gmail.com', 'khalid1.jpeg', '$2y$10$rTaLyj7B2OLXp18hGGQBWugm8u0FEo43f0mTHEQBgnbdEYu7RK9sy', 1, 0, 1581605526),
-(32, 'Didi', 'didimakriadi@gmail.com', 'default.jpg', '$2y$10$T2gE5aFf0eJCKMcGhA38ieldyVK9UkfIuXTBj12Pahi/ud0v/NPhS', 3, 1, 1605477237);
+(32, 'Didi', 'didimakriadi@gmail.com', 'default.jpg', '$2y$10$T2gE5aFf0eJCKMcGhA38ieldyVK9UkfIuXTBj12Pahi/ud0v/NPhS', 3, 1, 1605477237),
+(35, 'Khalid Mahfudh Al Azizi', 'khalidmahfudh94@gmail.com', 'default.jpg', '$2y$10$pn9T68AnKWvPTn.4HUkMiOx6jrK3FeLPZd/rILwlITi0VsXopHl.2', 3, 1, 1606425431);
 
 -- --------------------------------------------------------
 
@@ -425,6 +407,27 @@ INSERT INTO `user_menu` (`id`, `menu`) VALUES
 (2, 'KONSULTASI GANGGUAN LAYANAN'),
 (3, 'USER'),
 (4, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_requests`
+--
+
+CREATE TABLE `user_requests` (
+  `id` int(11) NOT NULL,
+  `request` varchar(128) NOT NULL,
+  `layanan` varchar(128) NOT NULL,
+  `id_layanan` int(11) NOT NULL,
+  `kode_gejala` varchar(255) NOT NULL,
+  `kode_gangguan` int(11) NOT NULL,
+  `nama_layanan` varchar(128) NOT NULL,
+  `solusi` text NOT NULL,
+  `cf_pakar` float NOT NULL,
+  `image` varchar(128) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `date` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -554,12 +557,6 @@ ALTER TABLE `gejala_gangguan_useetv`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `teknisi_requests`
---
-ALTER TABLE `teknisi_requests`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -575,6 +572,12 @@ ALTER TABLE `user_access_menu`
 -- Indexes for table `user_menu`
 --
 ALTER TABLE `user_menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_requests`
+--
+ALTER TABLE `user_requests`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -603,43 +606,43 @@ ALTER TABLE `user_token`
 -- AUTO_INCREMENT for table `data_gangguan_internet`
 --
 ALTER TABLE `data_gangguan_internet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `data_gangguan_telepon`
 --
 ALTER TABLE `data_gangguan_telepon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `data_gangguan_useetv`
 --
 ALTER TABLE `data_gangguan_useetv`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `data_gejala_internet`
 --
 ALTER TABLE `data_gejala_internet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `data_gejala_telepon`
 --
 ALTER TABLE `data_gejala_telepon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `data_gejala_useetv`
 --
 ALTER TABLE `data_gejala_useetv`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `gejala_gangguan_internet`
 --
 ALTER TABLE `gejala_gangguan_internet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `gejala_gangguan_telepon`
@@ -654,16 +657,10 @@ ALTER TABLE `gejala_gangguan_useetv`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
--- AUTO_INCREMENT for table `teknisi_requests`
---
-ALTER TABLE `teknisi_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
@@ -676,6 +673,12 @@ ALTER TABLE `user_access_menu`
 --
 ALTER TABLE `user_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_requests`
+--
+ALTER TABLE `user_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `user_role`
@@ -693,7 +696,7 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT for table `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
