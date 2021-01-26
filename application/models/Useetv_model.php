@@ -381,6 +381,14 @@ class Useetv_model extends CI_model
     {
         $problems =  $this->gejalaByGangguan();
 
+        $n = 0;
+        foreach ($problems as $problem) {
+            if ($problem == null) {
+                unset($problems[$n]);
+            }
+            $n++;
+        }
+
         $i = 0;
         foreach ($problems as $pro) {
 
@@ -392,6 +400,7 @@ class Useetv_model extends CI_model
             foreach ($pro as $p) {
                 $theGangguan[$i][$j] = $p['nama_gejala'];
                 $theGangguan[$i][++$j] = $p['kode_gejala'];
+                $theGangguan[$i][++$j] = $p['cf_pakar'];
                 $j++;
             }
 

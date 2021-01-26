@@ -2,7 +2,9 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <nav class="title">
+        <h1 class="h3 text-dark text-center"><?= $title; ?></h1>
+    </nav>
 
     <div class="row">
         <div class="col-lg-6">
@@ -11,7 +13,7 @@
     </div>
 
     <div class="card mb-3 col-lg-8">
-        <div class="row no-gutters">
+        <div class="row no-gutters py-2">
             <div class="col-md-4">
                 <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="card-img" alt="<?= $user['name']; ?>">
             </div>

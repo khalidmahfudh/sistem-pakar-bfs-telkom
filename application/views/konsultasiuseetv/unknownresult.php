@@ -37,15 +37,15 @@
 						<div class="col-sm-4">
 							<div class="card percentageCard my-3 text-gray-900 fade-in" style="border-left: solid 5px #1cc88a; height: 300px;">
 								<div class="card-body text-center">
-									<h5 class="card-title">Unknown</h5>
+									<h5 class="card-title">Unknown (Tidak diketahui)</h5>
 									<p class="card-text">100%</p>
-									<p class="card-text">SOLUSI<br>Dilakukannya Pengecekan Lebih Mendalam Atau Menghubungi Rekan</p>
+									<p class="card-text">SOLUSI<br>Menunggu, masih dilakukan pengecekan mendalam</p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<a href="<?= base_url('konsultasiuseetv/questions/1');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
+				<a href="<?= base_url('konsultasiuseetv/diagnosa');  ?>" class=" btn btn-danger btn-lg text-light mb-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA KEMBALI</a>
 			</div>
 		</div>
 	</div>

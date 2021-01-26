@@ -3,7 +3,6 @@
 <!-- Page Heading -->
 
 <nav class="title">
-
     <h1 class="h3 mb-4 text-gray-800 text-center">Konsultasi <?= $title; ?></h1>
 </nav>
 

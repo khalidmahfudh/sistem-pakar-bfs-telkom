@@ -2,7 +2,6 @@
 for ($i = 0; $i < count($questions); $i++) {
     $theQuestions[$i] = array_slice($questions[$i], 3);
 }
-$checked = $symptomCode;
 ?>
 
 <!-- Begin Page Content -->
@@ -33,12 +32,15 @@ $checked = $symptomCode;
 
                         <?php
                         $sliceQuestion = array_slice($question, 3);
-                        $chunkSliceQuestion = array_chunk($sliceQuestion, 2);
+                        $chunkSliceQuestion = array_chunk($sliceQuestion, 3);
                         ?>
+
+
                         <div class="form-wrap">
                             <h4 class="card-header text-gray-900 text-center mb-3">Menghitung Persentase Kemungkinan [ <?= $question[0]; ?> ]</h4>
                             <?php $j = 1; ?>
-                            <?php foreach ($chunkSliceQuestion as $csq) : ?>
+                            <?php foreach ($chunkSliceQuestion as $csq) :
+                            ?>
                                 <div class="row ml-2">
                                     <div class="col-sm">
                                         <div class="form-check form-check">
@@ -47,14 +49,10 @@ $checked = $symptomCode;
                                                 <div class="d-flex align-items-center radio-wrapper">
                                                     <label class="container">Ya
                                                         <?php if ($checked == $csq[1]) : ?>
-                                                            <input type="radio" checked="checked" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="2">
+                                                            <input type="radio" checked="checked" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="1">
                                                         <?php else : ?>
-                                                            <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="2">
+                                                            <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="1">
                                                         <?php endif; ?>
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="container">Tidak Tau
-                                                        <input type="radio" name="radio<?= $i . $j ?>" id="radio<?= $i . $j ?>" value="1">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                     <label class="container">Tidak

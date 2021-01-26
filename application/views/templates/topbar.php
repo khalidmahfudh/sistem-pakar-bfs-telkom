@@ -36,6 +36,11 @@
               <h6 class="dropdown-header bg-dark">
                 Notifications
               </h6>
+              <?php if (!$requests) : ?>
+                <div class="text-center small text-gray-500 pt-3">
+                  <p>(/'-')/..no request..(/'-')/</p>
+                </div>
+              <?php endif; ?>
               <?php foreach ($requests as $request) : ?>
 
                 <div class="dropdown-item d-flex align-items-center">

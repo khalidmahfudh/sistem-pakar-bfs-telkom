@@ -9,7 +9,7 @@
 
 <div class="container bg-div pt-3 pb-3 py-5" style="height: 80%">
     <div class="row">
-        <a href="<?= base_url('konsultasiuseetv/questions/1');  ?>" class="btn1-signal btn btn-danger btn-lg text-light my-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA SEKARANG</a>
+        <a href="<?= base_url('konsultasiuseetv/diagnosa');  ?>" class="btn1-signal btn btn-danger btn-lg text-light my-4 mx-auto"><i class="fas fa-stethoscope"></i> DIAGNOSA SEKARANG</a>
     </div>
 
     <?php $colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
