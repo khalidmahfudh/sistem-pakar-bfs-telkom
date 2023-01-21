@@ -179,7 +179,7 @@
                                 "name" => $user['name'],
                                 "date" => time()
                             ];
-                            $this->db->insert('teknisi_requests', $data);
+                            $this->db->insert('user_requests', $data);
 
                             $this->session->set_flashdata('flash', 'Diajukan Ke Pakar');
                             redirect('manageinternet/rules');

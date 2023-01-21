@@ -421,7 +421,7 @@ class Internet_model extends CI_model
 
         $kode = $this->input->post('kodegejala');
 
-        if ($role == 3) {
+        if ($role != 1) {
             $data = [
                 "request" => "Tambah Data Gejala",
                 "layanan" => "Internet Fiber",

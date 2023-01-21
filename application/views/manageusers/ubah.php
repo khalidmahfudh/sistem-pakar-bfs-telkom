@@ -3,7 +3,7 @@
         <div class="col-md-6">
 
             <div class="card">
-                <div class="h3 text-dark text-center">Form Ubah Data User</div>
+                <div class="card-header bg-dark text-white">Form Ubah Data User</div>
                 <div class="card-body">
 
                     <form action="" method="post">
@@ -30,8 +30,8 @@
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="radioUser" value="3" <?php if ($single_user['role_id'] == "3") echo "checked"; ?>>
-                                <label class="form-check-label" for="radioUser">
+                                <input class="form-check-input" type="radio" name="status" id="radioTeknisi" value="3" <?php if ($single_user['role_id'] == "3") echo "checked"; ?>>
+                                <label class="form-check-label" for="radioTeknisi">
                                     Teknisi
                                 </label>
                             </div>
